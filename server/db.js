@@ -14,12 +14,22 @@ if (config.databaseUrl) {
 
 const JSON_PATH = path.join(__dirname, "..", "data", "db.json");
 let mem = null;
+
 function loadMem() {
   if (mem) return mem;
-  try { mem = JSON.parse(fs.readFileSync(JSON_PATH, "utf8")); }
-  catch { mem = { users: [], deposits: [], cards: [], tickets: [] }; }
+  try { 
+    mem = JSON.parse(fs.readFileSync(JSON_PATH, "utf8")); 
+  } catch { 
+    mem = { users: [], deposits: [], cards: [], tickets: [] }; 
+  }
+  // Asegurar que las propiedades existan
+  if (!mem.users) mem.users = [];
+  if (!mem.deposits) mem.deposits = [];
+  if (!mem.cards) mem.cards = [];
+  if (!mem.tickets) mem.tickets = [];
   return mem;
 }
+
 function saveMem() {
   fs.mkdirSync(path.dirname(JSON_PATH), { recursive: true });
   fs.writeFileSync(JSON_PATH, JSON.stringify(mem, null, 2));
