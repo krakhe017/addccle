@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ESQ BYPASS</title>
+<link rel="icon" type="image/png" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1NGQnmst_4PAq4CGgcO1cmfDCazasn4AX3njcmOOykqSPAWEWfuRngVm0&s=10">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#060708;--line:#1e2228;--line2:#2a2f37;--txt:#c9ced6;--txt-hi:#e9edf2;--dim:#6a7079;--dim2:#4a5058;--accent:#9aa4b0;--ok:#7fa88a;--bad:#b57170;--warn:#b8a06a;--mono:ui-monospace,"SF Mono","JetBrains Mono","Fira Code",Menlo,Consolas,monospace;--r:3px}
+*{box-sizing:border-box}html,body{min-height:100%}body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--mono);font-size:14px;letter-spacing:.01em;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.bg{position:fixed;inset:0;z-index:0;pointer-events:none;background:#000}.bg::after{content:"";position:absolute;inset:-20%;background:radial-gradient(closest-side,transparent 42%,rgba(0,0,0,.85) 100%);animation:breathe 14s ease-in-out infinite}@keyframes breathe{0%,100%{opacity:.72;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}}
+.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.055;mix-blend-mode:screen;animation:grainShift 1.1s steps(4) infinite}@keyframes grainShift{0%{transform:translate(0,0)}25%{transform:translate(-2%,1%)}50%{transform:translate(1%,-2%)}75%{transform:translate(-1%,-1%)}100%{transform:translate(0,0)}}
+.scanlines{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.35;background:repeating-linear-gradient(to bottom,rgba(255,255,255,.022) 0 1px,transparent 1px 3px)}
+body.pure .bg{background:#000}body.pure .frame{background:#050506;box-shadow:0 24px 60px rgba(0,0,0,.95)}
+.money-canvas{position:fixed;inset:0;z-index:1;pointer-events:none}
+.shell{position:relative;z-index:3;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:34px 22px 44px}
+.frame{width:100%;max-width:1000px;display:grid;grid-template-columns:1.05fr .95fr;background:linear-gradient(180deg,#0e1013 0%,#0a0b0d 100%);border:1px solid var(--line);border-radius:var(--r);box-shadow:0 40px 110px rgba(0,0,0,.85);overflow:hidden;position:relative}
+.frame::before,.frame::after{content:"";position:absolute;width:16px;height:16px;border:1px solid var(--line2);pointer-events:none}.frame::before{top:8px;left:8px;border-right:0;border-bottom:0}.frame::after{bottom:8px;right:8px;border-left:0;border-top:0}
+.brand{padding:40px 38px;border-right:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.018),transparent 40%),#0b0c0f;display:flex;flex-direction:column;gap:22px}
+.brand-top{display:flex;flex-direction:column;gap:18px}.logo{display:flex;align-items:center}.logo .logo-img{display:block;max-width:190px;max-height:140px;object-fit:contain;border-radius:8px;filter:drop-shadow(0 12px 30px rgba(0,0,0,.72))}
+.wordmark h1{margin:0;display:inline-block;font-family:"Space Grotesk",Inter,sans-serif;font-size:28px;font-weight:700;line-height:1.1;text-transform:uppercase;background:linear-gradient(180deg,#fff 0%,#eaf2ff 44%,#a9bcd8 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding:0 0 9px 0;border-bottom:3px solid #ffc233;filter:drop-shadow(0 0 16px rgba(130,180,255,.35));min-width:11ch}
+.wordmark h1 .caret{display:inline-block;width:3px;height:.86em;margin-left:3px;vertical-align:-.06em;background:#ffc233;box-shadow:0 0 10px rgba(255,194,51,.75);animation:caretBlink 1s steps(1,end) infinite}@keyframes caretBlink{0%,49%{opacity:1}50%,100%{opacity:0}}
+.wordmark h1 .ver{display:inline-block;font-size:11px;letter-spacing:.16em;color:#ffc233;-webkit-text-fill-color:#ffc233;border:1.5px solid #ffc233;border-radius:4px;padding:2px 7px;margin-left:10px;vertical-align:middle;font-weight:700;text-transform:lowercase;background:rgba(255,194,51,.07);box-shadow:0 0 12px rgba(255,194,51,.40)}
+.perks{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px}.perks li{display:flex;gap:10px;align-items:flex-start;font-size:12px;color:#949ba5}.perks li i{font-style:normal;color:var(--dim2);border:1px solid var(--line);border-radius:2px;width:18px;height:18px;flex:0 0 18px;display:grid;place-content:center;font-size:9px}
+.brand-foot{margin-top:auto}.statusline{display:flex;flex-wrap:wrap;gap:8px}.chip-tag{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);border:1px solid var(--line);border-radius:100px;padding:5px 10px;display:inline-flex;align-items:center;gap:7px}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok)}.dot.pulse{animation:dotpulse 2.2s ease-in-out infinite}@keyframes dotpulse{0%,100%{opacity:1}50%{opacity:.25}}
+.panel{padding:30px 34px 26px;display:flex;flex-direction:column;gap:18px;background:linear-gradient(180deg,#0d0f12,#0a0b0d);position:relative}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);position:relative}.tab{appearance:none;background:none;border:0;cursor:pointer;font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);padding:11px 4px;margin-right:18px}.tab.active{color:var(--txt-hi)}
+.tabline{position:absolute;bottom:-1px;height:1px;background:var(--accent);transition:transform .28s cubic-bezier(.5,.05,.2,1),width .28s ease;box-shadow:0 0 12px rgba(160,175,195,.5)}
+.view{display:none;animation:fade .28s ease}.view.active{display:block}@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.form{display:flex;flex-direction:column;gap:14px}.field{display:flex;flex-direction:column;gap:6px}.lbl{font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.wrap{display:flex;align-items:center;gap:8px;background:#07080a;border:1px solid var(--line);border-radius:var(--r)}.wrap:focus-within{border-color:#525c68;box-shadow:0 0 0 3px rgba(125,140,160,.07)}
+.wrap.err{border-color:#5c3634;box-shadow:0 0 0 3px rgba(180,110,105,.07)}.wrap input{flex:1;min-width:0;background:transparent;border:0;outline:0;font-family:var(--mono);font-size:13.5px;color:var(--txt-hi);padding:12px}
+.wrap .pre{color:var(--dim2);padding-left:12px;font-size:11px}.wrap .post{appearance:none;background:none;border:0;cursor:pointer;color:var(--dim2);font-family:var(--mono);font-size:11px;padding:10px 12px}
+.err{font-size:10.5px;color:var(--bad);letter-spacing:.06em}.err:empty{display:none}.hint{font-size:10.5px;color:var(--dim2);line-height:1.6}
+.meter{display:flex;flex-direction:column;gap:7px}.bars{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}.bars span{height:3px;border-radius:2px;background:#1b1f24}.meterinfo{display:flex;justify-content:space-between;font-size:10px;text-transform:uppercase;color:var(--dim2)}
+.captcha-box{border:1px solid var(--line);border-radius:var(--r);background:linear-gradient(180deg,#0a0b0e,#08090b);padding:12px;display:flex;flex-direction:column;gap:11px}.captcha-head{display:flex;justify-content:space-between}.captcha-head b{font-weight:500;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.captcha-row{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap}canvas#captchaCanvas{width:216px;height:62px;flex:0 0 216px;border:1px solid var(--line);border-radius:2px;background:#0a0b0e}
+.captcha-side{display:flex;flex-direction:column;gap:7px;flex:1;min-width:150px}.mini{appearance:none;background:linear-gradient(180deg,#15181c,#0d0f12);border:1px solid var(--line2);color:var(--dim);border-radius:2px;cursor:pointer;font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;padding:7px 10px}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:11px;color:var(--dim);cursor:pointer}.check input{appearance:none;width:15px;height:15px;flex:0 0 15px;border:1px solid var(--line2);border-radius:2px;background:#07080a;cursor:pointer;position:relative}.check input:checked{border-color:#5f6a77;background:#161a1f}.check input:checked::after{content:"";position:absolute;left:4px;top:1px;width:4px;height:8px;border:solid var(--txt-hi);border-width:0 1px 1px 0;transform:rotate(42deg)}
+.btn{appearance:none;cursor:pointer;font-family:var(--mono);border:1px solid var(--line2);border-radius:var(--r);background:linear-gradient(180deg,#1a1e23,#101317);color:var(--txt-hi);font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;padding:13px 16px;width:100%;position:relative;overflow:hidden}
+.btn:disabled{cursor:not-allowed;color:var(--dim2);background:#0c0e11;border-color:#191d22}.btn .spin{display:none}.btn.loading .txt{opacity:.35}.btn.loading .spin{display:block;position:absolute;left:50%;top:50%;width:13px;height:13px;margin:-7px 0 0 -7px;border:1px solid rgba(230,236,244,.25);border-top-color:#dfe4ea;border-radius:50%;animation:spin .7s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.msg{font-size:11px;line-height:1.6;padding:10px 12px;border-radius:2px;border:1px solid var(--line);background:#0a0c0f;color:var(--dim)}.msg.bad{border-color:#4a2f2e;background:#130d0d;color:#cf9b98}.msg.ok{border-color:#2c4034;background:#0c1310;color:#8db79c}.msg.warn{border-color:#443b26;background:#131007;color:#c3ac7d}.msg:empty{display:none}
+.alt{font-size:11px;color:var(--dim2);text-align:center}.alt a{color:var(--dim);text-decoration:none;border-bottom:1px dotted var(--dim2);cursor:pointer}
+.topbar{position:fixed;top:14px;right:16px;z-index:5;display:flex;gap:8px}.switch{display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim2);border:1px solid var(--line);border-radius:100px;padding:6px 11px;background:rgba(8,9,11,.6);font-family:var(--mono)}.switch .knob{width:22px;height:11px;border-radius:100px;background:#191d22;border:1px solid var(--line2);position:relative}.switch .knob::after{content:"";position:absolute;top:1px;left:1px;width:7px;height:7px;border-radius:50%;background:#5c646e}.switch.on .knob::after{left:12px;background:#c9ced6}
+.caps{font-size:10px;color:var(--warn);display:none;align-items:center;gap:7px}.caps.show{display:flex}
+#store{display:none;position:fixed;inset:0;overflow:auto;background:#020304}
+#store .page{width:100%;min-height:100vh;display:flex;flex-direction:column;background:radial-gradient(70% 55% at 50% 0%,rgba(22,28,36,.85) 0%,transparent 62%),#020304;font-family:Inter,sans-serif;font-size:14px;color:#e3e7ea}
+#store .header{position:relative;z-index:3;flex:none;width:100%;height:90px;display:flex;align-items:center;gap:22px;padding:0 36px;background:rgba(6,8,11,.72);border-bottom:1px solid rgba(180,195,210,.08)}
+#store .store-name{margin:0;min-width:12ch;font-family:"Space Grotesk",Inter,sans-serif;font-size:22px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:linear-gradient(180deg,#fff 0%,#eaf2ff 46%,#a9bcd8 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap}
+#store .store-caret{display:inline-block;width:3px;height:.82em;margin-left:3px;background:#ffc233;box-shadow:0 0 10px rgba(255,194,51,.75);animation:caretBlink 1s steps(1,end) infinite}
+#store .head-icons{margin-left:auto;display:flex;align-items:center;gap:20px}#store .logout{border:1px solid rgba(227,231,234,.22);background:rgba(155,184,201,.08);color:#e3e7ea;font:600 13px/1 Inter,sans-serif;padding:9px 15px;border-radius:3px;cursor:pointer}
+#store .body{position:relative;z-index:2;flex:1;display:flex;align-items:flex-start;width:100%}#store .sidebar{flex:none;width:294px;padding:20px 18px 40px;display:flex;flex-direction:column;border-right:1px solid rgba(180,195,210,.08);background:rgba(5,7,11,.82)}
+#store .profile{display:flex;align-items:center;gap:14px;padding:16px;border-radius:4px;background:rgba(155,184,201,.09);border:1px solid rgba(155,184,201,.10);margin-bottom:14px}#store .avatar{flex:none;width:38px;height:46px;overflow:hidden;border-radius:3px;background:#131820}#store .avatar img{width:100%;height:100%;object-fit:cover}
+#store .user-info{flex:1;min-width:0}#store .user-info p{margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#store .user-title{font-size:12px;font-weight:600;color:#8e9aa6}#store .user-name{font-size:15px;font-weight:700;color:#e8eef5}
+#store .nav-item{display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:4px;cursor:pointer}#store .nav-item .icon{width:21px;height:21px;color:#c3ccd6}#store .nav-item:hover{background-color:rgba(155,184,201,.08)}#store .nav-item.is-active{background-color:rgba(155,184,201,.14)}
+#store .nav-label{margin:0;flex:1;font-size:14px;font-weight:600;color:#dfe6ee}#store .nav-item.has-action{gap:10px}#store .nav-item.has-action .nav-label{flex:0 1 auto}#store .confirm-btn{flex:none;margin-left:auto;border:0;background:#3a3f47;border-radius:3px;padding:6px 12px;font:600 12px inherit;color:#f4f6f8;cursor:pointer}
+#store .cta{margin-top:16px;width:100%;border:0;background-color:#e83148;border-radius:3px;display:flex;align-items:center;justify-content:center;gap:9px;padding:11px 16px;cursor:pointer;color:#fff}#store .cta .icon{width:18px;height:18px;color:#fff}#store .cta-label{margin:0;font-size:14px;font-weight:700;color:#fff}
+#store .main{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:40px;padding:48px 40px 70px}#store .hero-row{width:100%;max-width:1000px;display:flex;align-items:center;justify-content:center;gap:26px;flex-wrap:wrap}
+#store .stat-card{flex:0 0 auto;width:202px;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:10px;padding:24px 20px;border-radius:14px;background:linear-gradient(150deg,rgba(255,255,255,.085) 0%,rgba(255,255,255,.020) 100%);border:1px solid rgba(255,194,51,.24);text-align:center}
+#store .stat-live{display:inline-flex;align-items:center;gap:7px;font-family:"Space Grotesk",Inter,sans-serif;font-size:9.5px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:#8fd6a4}#store .stat-num{font-family:"Space Grotesk",Inter,sans-serif;font-size:47px;font-weight:700;line-height:1;background:linear-gradient(180deg,#fff 0%,#ffdd8a 52%,#c99a1e 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}#store .stat-lbl{font-size:10.5px;font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:#aeb8c3}
+#store .hero-logo{flex:0 1 auto;max-width:330px;max-height:30vh;object-fit:contain;border-radius:10px;animation:heroFloat 7s ease-in-out infinite}@keyframes heroFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+#store .support-card{flex:0 0 auto;width:202px;display:flex;flex-direction:column;align-items:center;gap:12px;padding:24px 20px;border-radius:14px;background:linear-gradient(150deg,rgba(255,255,255,.085) 0%,rgba(255,255,255,.020) 100%);border:1px solid rgba(255,255,255,.11);text-align:center}#store .support-title{margin:0;font-family:"Space Grotesk",Inter,sans-serif;font-size:14px;font-weight:700;letter-spacing:.20em;text-transform:uppercase;color:#f0f4f8}#store .support-note{margin:0;font-size:11.5px;color:#9aa5b1}
+#store .ticket-btn{width:100%;border:1px solid rgba(255,194,51,.45);background:linear-gradient(180deg,rgba(255,194,51,.16),rgba(255,194,51,.05));color:#ffc233;font:700 12.5px inherit;padding:11px 14px;border-radius:5px;cursor:pointer}
+#store .news{width:100%;max-width:1000px;display:flex;flex-direction:column;gap:18px}#store .news-title{margin:0;display:flex;align-items:center;gap:14px;font-family:"Space Grotesk",Inter,sans-serif;font-size:11px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:#93a0ad}#store .news-title::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.16),transparent)}#store .news-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+#store .card{position:relative;overflow:hidden;border-radius:14px;padding:24px 26px 28px;min-height:280px;background:linear-gradient(150deg,rgba(255,255,255,.085) 0%,rgba(255,255,255,.020) 100%);border:1px solid rgba(255,255,255,.11)}#store .card-tag{display:inline-block;font-family:"Space Grotesk",Inter,sans-serif;font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#ccd5df;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.13);border-radius:999px;padding:5px 12px;margin-bottom:30px}#store .card-title{margin:0 0 22px;font-family:"Space Grotesk",Inter,sans-serif;font-size:25px;font-weight:600;color:#f8fafc}#store .card-lines{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:16px;font-size:15px;color:#d2dae2}#store .card-body{margin:0;font-size:19px;line-height:1.62;color:#f0f4f9}#store .card-body .blue{color:#6cb6f2;font-weight:600}#store .card-body .red{color:#ef7070;font-weight:600}
+#store .ccpage,#store .vcpage{position:relative;z-index:4;flex:1;width:100%;display:none;flex-direction:column;align-items:center;gap:22px;padding:30px 24px 80px}#store .ccpage.on,#store .vcpage.on{display:flex;animation:fade .26s ease}
+#store .cc-top{width:100%;max-width:470px;display:flex;align-items:center;gap:12px}#store .cc-back{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.045);color:#b9c3cd;font-family:"Space Grotesk",Inter,sans-serif;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:8px 14px;border-radius:999px;cursor:pointer}#store .cc-crumb{font-family:"Space Grotesk",Inter,sans-serif;font-size:10px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:#7d8794}
+#store .cc-wrap,#store .vc-wrap{width:100%;max-width:470px;display:flex;flex-direction:column;gap:18px;padding:26px 24px;border-radius:16px;background:linear-gradient(150deg,rgba(255,255,255,.090) 0%,rgba(255,255,255,.022) 100%);border:1px solid rgba(255,255,255,.12)}
+#store .cc-head h2{margin:0;font-family:"Space Grotesk",Inter,sans-serif;font-size:19px;font-weight:700;color:#f4f7fa}#store .cc-head p{margin:5px 0 0;font-size:12.5px;color:#98a3ae}#store .cc-head strong{color:#ffc233}
+#store .cc-steps{display:flex;align-items:center;gap:8px;font-family:"Space Grotesk",Inter,sans-serif;font-size:9.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#6d7784}#store .cc-steps i{font-style:normal;padding:4px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.09);white-space:nowrap}#store .cc-steps i.on{color:#ffc233;border-color:rgba(255,194,51,.50);background:rgba(255,194,51,.09)}#store .cc-steps i.done{color:#8fd6a4;border-color:rgba(143,214,164,.40)}#store .cc-steps b{flex:1;height:1px;background:rgba(255,255,255,.10)}
+#store .cc-pane{display:none;flex-direction:column;gap:14px}#store .cc-pane.on{display:flex;animation:fade .24s ease}#store .cc-note{margin:0;font-size:12.5px;color:#9aa5b1}#store .cc-token-note{margin:0;font-size:11px;color:#7d8794}#store .cc-token-hint{margin:0;font-family:"Space Grotesk",Inter,sans-serif;font-size:10px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#5d6673}#store .cc-token-hint.ok{color:#8fd6a4}#store .cc-token-hint.bad{color:#e08585}
+#store .cc-modes{display:flex;gap:6px;padding:4px;border-radius:12px;background:rgba(0,0,0,.34);border:1px solid rgba(255,255,255,.09)}#store .cc-mode{flex:1;border:0;border-radius:9px;cursor:pointer;font-family:"Space Grotesk",Inter,sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:10px 8px;color:#8e99a5;background:transparent}#store .cc-mode.on{color:#0d0f12;background:linear-gradient(180deg,#ffd977,#e0aa2a)}
+#store .cc-field.cc-only-mail{display:none}#store .cc-field.cc-only-mail.on{display:flex}#store #ccToken{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;resize:vertical;min-height:44px}
+#store .cc-ident{display:flex;align-items:center;gap:14px;padding:14px;border-radius:12px;background:linear-gradient(150deg,rgba(255,255,255,.075) 0%,rgba(255,255,255,.012) 100%);border:1px solid rgba(255,194,51,.22)}#store .cc-ident-logo{flex:none;width:46px;height:46px;border-radius:11px;overflow:hidden;background:#0b0c0f;border:1.5px solid rgba(255,194,51,.55)}#store .cc-ident-logo img{width:100%;height:100%;object-fit:contain;padding:6px}#store .cc-ident-txt{flex:1;min-width:0}#store .cc-ident-id{font-family:"Space Grotesk",Inter,sans-serif;font-size:15px;font-weight:700;color:#f2f6fa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}#store .cc-ident-sub{font-size:10.5px;color:#8a95a1}
+#store .cc-preview{width:100%;aspect-ratio:1.586;border-radius:13px;position:relative;overflow:hidden;background:linear-gradient(135deg,#2b313a 0%,#12161c 100%);border:1px solid rgba(255,255,255,.11);padding:16px 18px;display:flex;flex-direction:column;justify-content:space-between}
+#store .cc-chip{width:38px;height:27px;border-radius:5px;background:linear-gradient(140deg,#fdf0c4,#d9b862 46%,#8e6d24)}#store .cc-pv-num{font-family:"Space Grotesk",Inter,sans-serif;font-size:17px;font-weight:600;letter-spacing:.10em;color:#eef2f6}#store .cc-pv-row{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}#store .cc-pv-lbl{font-family:"Space Grotesk",Inter,sans-serif;font-size:8px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#7d8794}#store .cc-pv-val{font-family:"Space Grotesk",Inter,sans-serif;font-size:12.5px;font-weight:600;color:#dfe6ee}#store .cc-pv-brand{display:flex;align-items:center;justify-content:flex-end;min-height:28px;min-width:52px}
+#store .cc-preview.cc-lv-platinum{background:linear-gradient(135deg,#59606d 0%,#1b1f26 100%);border-color:rgba(201,214,232,.42)}#store .cc-preview.cc-lv-gold{background:linear-gradient(135deg,#7a5f22 0%,#241a06 100%);border-color:rgba(255,217,119,.48)}#store .cc-preview.cc-lv-world{background:linear-gradient(135deg,#1e3c66 0%,#0a1220 100%);border-color:rgba(127,182,255,.42)}#store .cc-preview.cc-lv-signature{background:linear-gradient(135deg,#1f4736 0%,#0a1812 100%);border-color:rgba(143,224,180,.42)}#store .cc-preview.cc-lv-sapphire{background:linear-gradient(135deg,#1b3570 0%,#080e1e 100%);border-color:rgba(140,168,255,.45)}#store .cc-preview.cc-lv-black{background:linear-gradient(135deg,#1d1d20 0%,#050506 100%);border-color:rgba(180,180,190,.40)}
+#store .cc-logo{display:block;flex:none;height:20px;width:36px}#store .cc-pv-brand .cc-logo{height:26px;width:50px;color:#fff}
+#store .cc-info{display:grid;grid-template-columns:1.5fr 1.05fr 1fr;gap:1px;border-radius:11px;overflow:hidden;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08)}#store .cc-info-item{display:flex;flex-direction:column;gap:4px;padding:11px 12px;background:rgba(0,0,0,.32);min-width:0}#store .cc-info-lbl{font-family:"Space Grotesk",Inter,sans-serif;font-size:8px;font-weight:700;letter-spacing:.20em;text-transform:uppercase;color:#7d8794}#store .cc-info-val{font-family:"Space Grotesk",Inter,sans-serif;font-size:12.5px;font-weight:600;color:#eef2f6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#store .cc-info-val.dim{color:#5d6673}#store .cc-info-val.tier{color:#ffc233}#store .cc-info-val.unknown{color:#8a7a5c;font-style:italic}
+#store .cc-field{display:flex;flex-direction:column;gap:6px}#store .cc-field label{font-family:"Space Grotesk",Inter,sans-serif;font-size:9.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#8e99a5}#store .cc-field input,#store .cc-field textarea{width:100%;font-family:"Space Grotesk",Inter,sans-serif;font-size:15px;font-weight:500;letter-spacing:.07em;color:#eef2f6;background:rgba(0,0,0,.34);border:1px solid rgba(255,255,255,.11);border-radius:9px;padding:12px 13px;outline:none;resize:vertical}#store .cc-field input:focus,#store .cc-field textarea:focus{border-color:rgba(255,194,51,.55)}#store .cc-field input.bad,#store .cc-field textarea.bad{border-color:#7c3f3f}#store .cc-row{display:flex;gap:12px}#store .cc-row .cc-field{flex:1}
+#store .cc-btn{width:100%;border:0;border-radius:10px;font-family:"Space Grotesk",Inter,sans-serif;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:15px;cursor:pointer;color:#0d0f12;background:linear-gradient(180deg,#ffd977,#e0aa2a)}#store .cc-btn:disabled{cursor:default;filter:grayscale(.5) brightness(.72)}
+#store .cc-err{margin:0;font-size:11.5px;color:#e08585}#store .cc-err:empty{display:none}#store .cc-spin{width:38px;height:38px;align-self:center;border:2px solid rgba(255,194,51,.20);border-top-color:#ffc233;border-radius:50%;animation:spin .8s linear infinite}#store .cc-center{margin:0;text-align:center;font-size:12.5px;color:#9aa5b1}
+#store .cc-prog{display:none;flex-direction:column;gap:12px}#store .cc-prog.on{display:flex}#store .cc-bar{height:5px;border-radius:99px;overflow:hidden;background:rgba(255,255,255,.09)}#store .cc-bar span{display:block;height:100%;width:0%;background:linear-gradient(90deg,#e0aa2a,#ffd977);transition:width .35s ease}#store .cc-step-txt{display:flex;justify-content:space-between;font-size:11.5px;color:#9aa5b1}#store .cc-step-txt b{font-family:"Space Grotesk",Inter,sans-serif;color:#ffc233;font-weight:700;font-size:13px}
+#store .cc-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;font-size:12.5px;color:#7d8794}#store .cc-list li{display:flex;align-items:center;gap:10px}#store .cc-list li em{font-style:normal;width:15px;height:15px;flex:none;border-radius:50%;border:1px solid rgba(255,255,255,.16);display:grid;place-content:center;font-size:8.5px;color:transparent}#store .cc-list li.act{color:#eef2f6}#store .cc-list li.act em{border-color:rgba(255,194,51,.60);border-top-color:#ffc233;animation:spin .8s linear infinite}#store .cc-list li.done{color:#8fd6a4}#store .cc-list li.done em{border-color:rgba(143,214,164,.60);color:#8fd6a4}
+#store .cc-ok{width:56px;height:56px;align-self:center;border-radius:50%;display:grid;place-content:center;font-size:26px;background:rgba(143,214,164,.14);border:1px solid rgba(143,214,164,.50);color:#8fd6a4;animation:pop .35s cubic-bezier(.2,1.4,.5,1)}@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+#store .cc-saved{width:100%;max-width:470px;display:none;flex-direction:column;gap:10px}#store .cc-saved.on{display:flex}#store .cc-saved h4{margin:0;font-family:"Space Grotesk",Inter,sans-serif;font-size:10px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:#7d8794}#store .cc-saved-list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+#store .cc-mini{position:relative;overflow:hidden;display:flex;align-items:center;gap:13px;padding:12px 14px;border-radius:14px;background:#f6f7fb;border:1px solid #e3e7f0;animation:pop .32s cubic-bezier(.2,1.3,.5,1)}#store .cc-mini-brand{flex:none;width:56px;height:42px;border-radius:10px;background:#fff;border:1px solid #d9dfea;display:grid;place-content:center}#store .cc-mini-brand .cc-logo{height:22px;width:44px;color:#1434CB}#store .cc-mini-info{flex:1;min-width:0}#store .cc-mini-num{font-family:"Space Grotesk",Inter,sans-serif;font-size:15px;font-weight:700;color:#161b26;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}#store .cc-mini-sub{font-size:12px;color:#6f7889;display:block}#store .cc-mini-del{flex:none;width:27px;height:27px;border-radius:50%;display:grid;place-content:center;padding:0;border:1px solid #dde2ec;background:#fff;color:#8b93a3;font-size:15px;cursor:pointer}
+#store .vc-stage{display:none;flex-direction:column;gap:14px;width:100%}#store .vc-stage.on{display:flex}#store .vc-card{position:relative;width:100%;display:flex;align-items:center;gap:13px;padding:13px 14px;border-radius:14px;background:linear-gradient(150deg,rgba(255,255,255,.080) 0%,rgba(255,255,255,.014) 100%);border:1px solid rgba(255,255,255,.11);margin-bottom:10px}#store .vc-card-info{flex:1;min-width:0}#store .vc-card-num{font-family:"Space Grotesk",Inter,sans-serif;font-size:14px;font-weight:600;color:#eef2f6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}#store .vc-card-sub{font-size:11.5px;color:#8a95a1;display:block}#store .vc-go{flex:none;border:1px solid rgba(255,194,51,.45);background:linear-gradient(180deg,rgba(255,194,51,.16),rgba(255,194,51,.05));color:#ffc233;font-family:"Space Grotesk",Inter,sans-serif;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:8px 12px;border-radius:999px;cursor:pointer}
+#store .vc-row{display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:12px;background:rgba(0,0,0,.30);border:1px solid rgba(143,214,164,.30);animation:pop .3s cubic-bezier(.2,1.3,.5,1)}#store .vc-check{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-content:center;font-size:13px;background:rgba(143,214,164,.16);border:1px solid rgba(143,214,164,.55);color:#8fd6a4}#store .vc-body{flex:1;min-width:0}#store .vc-num{font-family:"Space Grotesk",Inter,sans-serif;font-size:14px;font-weight:600;color:#eef2f6;display:block}#store .vc-sub{font-size:11px;color:#8a95a1;display:block}#store .vc-badge{flex:none;font-family:"Space Grotesk",Inter,sans-serif;font-size:8.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#8fd6a4;border:1px solid rgba(143,214,164,.45);border-radius:999px;padding:3px 9px}#store .vc-empty{margin:0;font-size:12.5px;color:#8a95a1;text-align:center}
+#store .nav-badge{flex:none;margin-left:auto;min-width:20px;height:20px;padding:0 6px;display:none;place-items:center;border-radius:999px;background:linear-gradient(180deg,#ffd977,#e0aa2a);color:#14171c;font-family:"Space Grotesk",Inter,sans-serif;font-size:10.5px;font-weight:700}#store .nav-badge.on{display:grid}
+.ticket-modal{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(2,3,5,.76)}.ticket-modal.open{display:flex}.ticket-box{width:100%;max-width:420px;display:flex;flex-direction:column;gap:14px;padding:26px 24px 22px;border-radius:14px;background:linear-gradient(180deg,#1c1f25 0%,#14171c 100%);border:1px solid rgba(255,255,255,.10)}.ticket-box h3{margin:0;font-family:"Space Grotesk",Inter,sans-serif;font-size:16px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#eef2f6}.ticket-field{display:flex;flex-direction:column;gap:6px}.ticket-field span{font-family:"Space Grotesk",Inter,sans-serif;font-size:9.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#8e99a5}.ticket-field input,.ticket-field textarea{width:100%;font-family:Inter,sans-serif;font-size:13.5px;color:#e9eef4;background:#0c0e12;border:1px solid #2a2f37;border-radius:9px;padding:11px 12px;outline:none;resize:vertical}.ticket-actions{display:flex;gap:10px}.ticket-cancel{flex:1;font:600 12px inherit;padding:11px;border-radius:9px;cursor:pointer;background:transparent;border:1px solid #333941;color:#aab3bd}.ticket-send{flex:1.4;font:700 12px inherit;padding:11px;border-radius:9px;cursor:pointer;background:#e83148;border:0;color:#fff}.ticket-msg{margin:0;font-size:11.5px;color:#98a3ae}.ticket-msg:empty{display:none}.ticket-msg.bad{color:#e08585}.ticket-msg.ok{color:#8fd6a4}
+.buypage{position:fixed;inset:0;z-index:40;display:none;align-items:center;justify-content:center;padding:34px 22px;background:rgba(6,7,8,.94);backdrop-filter:blur(6px);font-family:var(--mono)}.buypage.on{display:flex}.buy-frame{position:relative;width:100%;max-width:520px;background:linear-gradient(180deg,#0e1013 0%,#0a0b0d 100%);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}.buy-close{position:absolute;top:12px;right:12px;z-index:5;width:34px;height:34px;border:1px solid var(--line2);background:transparent;color:var(--dim);font-size:24px;border-radius:var(--r);cursor:pointer}.buy-stage{display:none;padding:34px 30px 38px}.buy-stage.on{display:block;animation:fade .28s ease}.buy-wrap{display:flex;flex-direction:column;gap:18px}.buy-head h2{margin:0 0 6px;font-family:"Space Grotesk",Inter,sans-serif;font-size:22px;color:var(--txt-hi)}.buy-head p{margin:0;color:var(--dim);font-size:12px}
+.plan-card{position:relative;border:1px solid var(--line2);border-radius:var(--r);padding:22px;background:linear-gradient(180deg,rgba(255,255,255,.025),transparent 60%)}.plan-badge{position:absolute;top:14px;right:14px;font-size:10px;font-weight:800;padding:4px 8px;border-radius:3px}.plan-badge.new{color:#060708;background:#ffc233}.plan-badge.owned{color:#fff;background:#7fa88a}.plan-name{font-family:"Space Grotesk",Inter,sans-serif;font-size:20px;font-weight:700;color:var(--txt-hi);margin-bottom:4px}.plan-sub{font-size:12px;color:var(--dim);margin-bottom:14px}.plan-price{display:flex;align-items:flex-start;gap:4px;margin-bottom:16px}.plan-num{font-size:34px;font-weight:800;color:var(--txt-hi)}.plan-cur{font-size:14px;color:var(--dim);margin-top:4px}.plan-feats{list-style:none;margin:0 0 20px;padding:0;display:flex;flex-direction:column;gap:9px}.plan-feats li{display:flex;gap:10px;font-size:12px;color:#949ba5}.plan-feats li em{font-style:normal;color:#7fa88a;font-weight:700}
+.buy-btn{width:100%;border:0;border-radius:var(--r);padding:14px 16px;font-family:var(--mono);font-size:13px;font-weight:700;text-transform:uppercase;color:#060708;background:#ffc233;cursor:pointer}.buy-btn.owned{background:var(--line2);color:var(--txt);cursor:default}.plan-hint{margin:10px 0 0;font-size:11px;color:var(--dim);text-align:center}
+.bal-card{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;background:rgba(255,255,255,.02)}.bal-card.enough{border-color:rgba(127,168,138,.4)}.bal-val{font-size:18px;font-weight:700;color:var(--txt-hi)}.bal-lbl{font-size:11px;color:var(--dim)}.mini-recharge{border:1px solid var(--line2);background:transparent;color:var(--txt);border-radius:var(--r);padding:8px 14px;font-family:var(--mono);font-size:11px;cursor:pointer}
+.dep-block{border-top:1px solid var(--line);padding-top:16px}.dep-title{font-size:11px;color:var(--dim);text-transform:uppercase;margin-bottom:10px}.dep-list{display:flex;flex-direction:column;gap:10px}.dep-item{border:1px solid var(--line);border-radius:var(--r);padding:12px;background:rgba(255,255,255,.015)}.dep-item.pending{border-left:3px solid var(--warn)}.dep-item.confirmed{border-left:3px solid var(--ok)}.dep-item.rejected{border-left:3px solid var(--bad);opacity:.7}.dep-meta{display:flex;justify-content:space-between;font-size:11px;color:var(--dim);margin-bottom:6px}.dep-amount{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.dep-amount b{color:var(--txt-hi);font-size:14px}.dep-amount i{font-size:10px;font-weight:700;padding:3px 7px;border-radius:3px;background:rgba(255,255,255,.06);color:var(--txt)}.dep-tx{font-size:10px;color:var(--dim)}.dep-tx code{color:var(--txt);word-break:break-all}
+.pay-list{display:flex;flex-direction:column;gap:10px}.pay-opt{width:100%;display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid var(--line);border-radius:var(--r);background:rgba(255,255,255,.015);color:var(--txt);cursor:pointer;text-align:left}.pay-ico{width:38px;height:38px;border-radius:50%;display:grid;place-content:center;font-size:16px;font-weight:700;background:rgba(255,255,255,.06);color:var(--txt-hi)}.pay-txt{flex:1;display:flex;flex-direction:column}.pay-name{font-weight:700;color:var(--txt-hi);font-size:13px}.pay-net{font-size:11px;color:var(--dim)}.pay-arrow{color:var(--dim);font-size:18px}
+.pay-amount{border:1px dashed var(--line2);border-radius:var(--r);padding:16px;text-align:center;background:rgba(255,255,255,.02)}.pay-amount-lbl{display:block;font-size:11px;color:var(--dim);text-transform:uppercase;margin-bottom:6px}.pay-amount-val{display:block;font-size:24px;font-weight:800;color:var(--txt-hi);margin-bottom:4px}.pay-amount-note{display:block;font-size:11px;color:var(--dim)}
+.buy-field{display:flex;flex-direction:column;gap:7px}.buy-field label{font-size:11px;color:var(--dim);text-transform:uppercase}.buy-field input{width:100%;background:#0b0c0f;border:1px solid var(--line2);border-radius:var(--r);padding:12px 14px;color:var(--txt-hi);font-family:var(--mono);font-size:13px;outline:none}.buy-field input:focus{border-color:#ffc233}.buy-field input.bad{border-color:var(--bad)}.field-err{min-height:16px;font-size:11px;color:var(--bad)}
+.pay-addr{display:flex;gap:8px;align-items:center}.pay-addr-val{flex:1;background:#0b0c0f;border:1px solid var(--line2);border-radius:var(--r);padding:12px 14px;font-size:12px;color:var(--txt-hi);word-break:break-all}.pay-copy{flex:0 0 auto;border:1px solid var(--line2);background:transparent;color:var(--txt);border-radius:var(--r);padding:10px 14px;font-family:var(--mono);font-size:11px;cursor:pointer}.pay-copy.done{color:#7fa88a;border-color:#7fa88a}.pay-warn{margin:0;font-size:11px;color:var(--warn)}
+.buy-action{width:100%;border:0;border-radius:var(--r);padding:14px 16px;font-family:var(--mono);font-size:13px;font-weight:700;text-transform:uppercase;color:#060708;background:#ffc233;cursor:pointer}.buy-action:disabled{opacity:.6;cursor:not-allowed}.buy-back{width:100%;border:1px solid var(--line2);background:transparent;color:var(--dim);border-radius:var(--r);padding:12px 16px;font-family:var(--mono);font-size:12px;cursor:pointer}
+.sent-box{text-align:center;padding:10px 0}.sent-icon{font-size:44px;margin-bottom:12px}.sent-status{font-size:16px;font-weight:700;color:var(--txt-hi);margin:0 0 8px}.sent-detail{font-size:12px;color:var(--dim);margin:0 0 16px}.sent-tx{text-align:left;border:1px solid var(--line);border-radius:var(--r);padding:12px;background:rgba(255,255,255,.02)}.sent-tx span{display:block;font-size:10px;color:var(--dim);text-transform:uppercase;margin-bottom:4px}.sent-tx code{display:block;color:var(--txt);word-break:break-all;font-size:12px}
+.admin-empty{text-align:center;padding:30px 10px;color:var(--dim);font-size:13px;display:none}.admin-list{display:flex;flex-direction:column;gap:12px}.admin-row{border:1px solid var(--line);border-radius:var(--r);padding:14px;background:rgba(255,255,255,.015);display:flex;flex-direction:column;gap:12px}.admin-info{display:flex;flex-direction:column;gap:5px}.admin-info b{color:var(--txt-hi);font-size:13px}.admin-info span{color:var(--dim);font-size:11px}.admin-info code{color:var(--txt);font-size:11px;word-break:break-all;background:rgba(255,255,255,.04);padding:6px 8px;border-radius:3px}.admin-actions{display:flex;gap:10px}.admin-btn{flex:1;border:0;border-radius:var(--r);padding:10px;font-family:var(--mono);font-size:12px;font-weight:700;cursor:pointer}.admin-btn.ok{color:#060708;background:#7fa88a}.admin-btn.no{color:#fff;background:var(--bad)}
+@media (max-width:900px){#store .body{flex-direction:column}#store .sidebar{width:100%;border-right:0;border-bottom:1px solid rgba(180,195,210,.08)}#store .main{padding:34px 22px 60px}#store .news-grid{grid-template-columns:1fr}}
+@media (max-width:880px){.frame{grid-template-columns:1fr;max-width:520px}.brand{border-right:0;border-bottom:1px solid var(--line);padding:30px 24px}.panel{padding:24px 22px 22px}canvas#captchaCanvas{width:100%;flex:1 1 100%}}
+::selection{background:#2b3138;color:#fff}::-webkit-scrollbar{width:8px}::-webkit-scrollbar-thumb{background:#1d2127;border-radius:8px}#store a.nav-item{color:inherit;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<canvas class="money-canvas" id="moneyCanvas" aria-hidden="true"></canvas>
+<svg class="grain" aria-hidden="true"><filter id="grainF"><feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#grainF)"/></svg>
+<div class="scanlines" aria-hidden="true"></div>
+<div class="topbar" id="topbar"><button class="switch" id="blackoutToggle" type="button"><span class="knob"></span>blackout</button></div>
+
+<main class="shell" id="shell">
+<div class="frame">
+<section class="brand">
+<div class="brand-top">
+<div class="logo"><img class="logo-img" src="https://i.pinimg.com/736x/78/dd/25/78dd25d894ce47359807d3b770306d61.jpg" alt="ESQ BYPASS" decoding="async"></div>
+<div class="wordmark"><h1><span id="typeText"></span><span class="caret" aria-hidden="true"></span> <span class="ver">v2.1</span></h1></div>
+</div>
+<ul class="perks">
+<li><i>01</i><span>Contraseñas hasheadas con bcrypt en servidor.</span></li>
+<li><i>02</i><span>Captcha generado en canvas + trampa anti-bot.</span></li>
+<li><i>03</i><span>Bloqueo progresivo tras varios intentos fallidos.</span></li>
+<li><i>04</i><span>Cierre de sesión automático por inactividad.</span></li>
+</ul>
+<div class="brand-foot"><div class="statusline">
+<span class="chip-tag"><span class="dot pulse"></span>tls 1.3</span>
+<span class="chip-tag">256 clientes</span>
+<span class="chip-tag" id="clockChip">--:--:--</span>
+</div></div>
+</section>
+<section class="panel">
+<nav class="tabs" id="tabs">
+<button class="tab active" data-mode="login" type="button">Entrar</button>
+<button class="tab" data-mode="register" type="button">Registro</button>
+<span class="tabline" id="tabline"></span>
+</nav>
+<div class="view active" id="viewAuth">
+<form class="form" id="authForm" novalidate autocomplete="off">
+<input type="text" id="hpTrap" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+<div class="field"><label class="lbl" for="ident" id="identLabel">Usuario o correo</label>
+<div class="wrap"><span class="pre">&gt;</span><input id="ident" type="text" spellcheck="false" autocapitalize="off" placeholder="usuario o correo" autocomplete="username"></div>
+<span class="err" id="errIdent"></span></div>
+<div class="field"><label class="lbl" for="pass">Contraseña</label>
+<div class="wrap"><span class="pre">#</span><input id="pass" type="password" placeholder="••••••••••••" autocomplete="current-password"><button class="post" type="button" id="eye" aria-label="Mostrar contraseña">mostrar</button></div>
+<span class="caps" id="capsWarn"><span class="dot" style="background:var(--warn);box-shadow:none"></span> Bloq Mayús activado</span>
+<span class="err" id="errPass"></span></div>
+<div class="field" id="rowPass2" style="display:none"><label class="lbl" for="pass2">Repetir contraseña</label>
+<div class="wrap"><span class="pre">#</span><input id="pass2" type="password" placeholder="••••••••••••" autocomplete="new-password"></div>
+<span class="err" id="errPass2"></span></div>
+<div class="meter" id="meter" style="display:none">
+<div class="bars" id="bars"><span></span><span></span><span></span><span></span><span></span></div>
+<div class="meterinfo"><span id="strengthTxt">fuerza · —</span><span id="entropyTxt">0 bits</span></div></div>
+<div class="captcha-box">
+<div class="captcha-head"><b>Verificación anti-bot</b><span class="chip-tag" id="captchaState"><span class="dot" style="background:var(--warn);box-shadow:none"></span> obligatorio</span></div>
+<div class="captcha-row"><canvas id="captchaCanvas" width="216" height="62" aria-label="Captcha"></canvas>
+<div class="captcha-side"><div class="wrap"><span class="pre">?</span><input id="captchaInput" type="text" maxlength="6" spellcheck="false" autocapitalize="characters" placeholder="código" autocomplete="off" aria-label="Escribe el código de la imagen"></div>
+<button class="mini" type="button" id="captchaRefresh">&#10227; nuevo código</button></div></div>
+<span class="err" id="errCaptcha"></span>
+<span class="hint">5 caracteres, sin distinguir mayúsculas. Se regenera en cada intento fallido.</span>
+</div>
+<label class="check" id="rowTerms" style="display:none"><input type="checkbox" id="terms"><span>Acepto los términos de servicio y confirmo que esta cuenta es de uso personal.</span></label>
+<div class="msg" id="formMsg"></div>
+<button class="btn" type="submit" id="submitBtn" disabled><span class="txt" id="submitTxt">verificando entorno…</span><span class="spin"></span></button>
+<div class="alt" id="altLine">¿Aún sin cuenta? <a id="altLink" role="button" tabindex="0">Crear una cuenta</a></div>
+</form>
+</div>
+</section>
+</div>
+</main>
+
+<div id="store">
+<div class="page">
+<header class="header"><p class="store-name"><span id="storeType"></span><span class="store-caret" aria-hidden="true"></span></p>
+<div class="head-icons"><button class="logout" id="logoutBtn" type="button">Salir</button></div></header>
+<div class="body" id="storeBody">
+<nav class="sidebar">
+<div class="profile"><div class="avatar"><img src="https://russianmarketcc.net/images/user.png" alt="Máscara Anonymous" width="60" height="60"></div>
+<div class="user-info"><p class="user-title">Mi cuenta</p><p class="user-name" id="nickname">—</p></div></div>
+<div class="nav-item" title="ADD CC" id="navAddCC"><svg class="icon" aria-hidden="true"><use href="#i-products"></use></svg><p class="nav-label">ADD C-C</p></div>
+<div class="nav-item has-action" title="C-VC" id="navVerify"><svg class="icon" aria-hidden="true"><use href="#i-crown"></use></svg><p class="nav-label">C-VC</p><button class="confirm-btn" type="button" id="navVerifyBtn">Confirm</button></div>
+<div class="nav-item" title="Buy Now" id="navBuyNow"><svg class="icon" aria-hidden="true"><use href="#i-bag"></use></svg><p class="nav-label">Buy Now</p></div>
+<div class="nav-item" title="Support" id="navSupport"><svg class="icon" aria-hidden="true"><use href="#i-support"></use></svg><p class="nav-label">Support</p></div>
+<a class="nav-item" title="Tutorial" id="navTutorial" href="https://esqbypasstutorial.lat/" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-telegram"></use></svg><p class="nav-label">Tutorial</p></a>
+<button class="cta" type="button"><svg class="icon" aria-hidden="true"><use href="#i-bag"></use></svg><p class="cta-label">The Best Bypass</p></button>
+</nav>
+<main class="main">
+<div class="hero-row">
+<aside class="stat-card"><span class="stat-live"><span class="dot pulse"></span>live</span><span class="stat-num">86</span><span class="stat-lbl">compradores actuales</span></aside>
+<img class="hero-logo" src="https://ae-pic-a1.aliexpress-media.com/kf/S3ee25b334b5e41ae86b33a8841bb9acaW.jpg_480x480q75.jpg_.webp" alt="ESQ BYPASS" decoding="async">
+<aside class="support-card"><p class="support-title">Support</p><p class="support-note">¿Necesitas ayuda? Abre un ticket y te respondemos.</p><button class="ticket-btn" id="ticketBtn" type="button">Create ticket</button></aside>
+</div>
+<section class="news"><h2 class="news-title">News and updates</h2>
+<div class="news-grid">
+<article class="card"><span class="card-tag">Attention</span><h3 class="card-title">Please bookmark or save all links to always have access!</h3><ul class="card-lines"><li>WEB: https://esqbypasstutorial.lat/</li><li>WEB: https://esquelebypassnew.store/</li><li>WEB: https://esquelebypass.rip/</li></ul></article>
+<article class="card"><span class="card-tag">Telegram</span><p class="card-body"><span class="blue">Important notice</span>: Our online store does not have a Telegram channel nor do we have any contacts on <span class="red">Telegram</span>. Any channels claiming to be affiliated with us are fraudulent. The <span class="red">ONLY</span> way to communicate with us is through this website's ticket system.</p></article>
+</div></section>
+</main>
+</div>
+
+<section class="ccpage" id="ccPage">
+<div class="cc-top"><button class="cc-back" id="ccBack" type="button">&#8592; Volver</button><span class="cc-crumb">Add C-C</span></div>
+<div class="cc-wrap">
+<div class="cc-head"><h2>Añadir tarjeta</h2><p>Se vinculará a la cuenta <strong id="ccIdent">—</strong></p></div>
+<div class="cc-steps" id="ccSteps"><i data-s="1" class="on">Token</i><b></b><i data-s="2">Sesión</i><b></b><i data-s="3">Tarjeta</i></div>
+<div class="cc-pane on" id="ccPane1">
+<p class="cc-note">Elige cómo quieres identificarte para vincular la tarjeta.</p>
+<div class="cc-modes" id="ccModes"><button type="button" class="cc-mode on" data-m="token">Solo token</button><button type="button" class="cc-mode" data-m="mail">Correo + token</button></div>
+<div class="cc-field cc-only-mail" id="ccMailRow"><label for="ccName">Tu correo</label><input id="ccName" type="text" inputmode="email" spellcheck="false" autocapitalize="off" autocomplete="email" placeholder="tucorreo@ejemplo.com"></div>
+<div class="cc-field"><label for="ccToken">Token de acceso</label><textarea id="ccToken" rows="3" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="Pega aquí tu token"></textarea></div>
+<p class="cc-token-note" id="ccTokenNote">El token de acceso de 153 caracteres que te entregó el proveedor.</p>
+<p class="cc-token-hint" id="ccTokenHint">0 / 153 caracteres</p>
+<p class="cc-err" id="ccErr1"></p>
+<button class="cc-btn" id="ccNext" type="button">Continuar con token</button>
+</div>
+<div class="cc-pane" id="ccPane2">
+<div class="cc-ident"><div class="cc-ident-logo"><img src="https://i.pinimg.com/736x/78/dd/25/78dd25d894ce47359807d3b770306d61.jpg" alt="ESQ BYPASS"></div><div class="cc-ident-txt"><span class="cc-ident-id" id="ccIdentMask">—</span><span class="cc-ident-sub">Vinculando a esta cuenta</span></div></div>
+<div class="cc-spin"></div><p class="cc-center" id="ccVerifyTxt">Estableciendo sesión segura…</p>
+<div class="cc-prog on" id="ccProg2"><div class="cc-bar"><span id="ccBar2"></span></div><div class="cc-step-txt"><span id="ccStepName2">Negociando TLS 1.3…</span><b id="ccPct2">0%</b></div></div>
+</div>
+<div class="cc-pane" id="ccPane3">
+<div class="cc-preview" id="ccPreview"><div class="cc-chip"></div><div class="cc-pv-num" id="ccPvNum">•••• •••• •••• ••••</div>
+<div class="cc-pv-row"><div><div class="cc-pv-lbl">Titular</div><div class="cc-pv-val" id="ccPvHolder">—</div></div><div><div class="cc-pv-lbl">Vence</div><div class="cc-pv-val" id="ccPvExp">MM/YY</div></div><div class="cc-pv-brand" id="ccPvBrand"></div></div></div>
+<div class="cc-info"><div class="cc-info-item"><span class="cc-info-lbl">Banco emisor</span><span class="cc-info-val dim" id="ccBank">—</span></div><div class="cc-info-item"><span class="cc-info-lbl">Nivel</span><span class="cc-info-val dim" id="ccLevel">—</span></div><div class="cc-info-item"><span class="cc-info-lbl">País</span><span class="cc-info-val dim" id="ccCountry">—</span></div></div>
+<div class="cc-field"><label for="ccNum">Número de tarjeta</label><input id="ccNum" type="text" inputmode="numeric" autocomplete="off" placeholder="4242 4242 4242 4242" maxlength="19"></div>
+<div class="cc-row"><div class="cc-field"><label for="ccExp">Fecha</label><input id="ccExp" type="text" inputmode="numeric" autocomplete="off" placeholder="MM/YY" maxlength="5"></div><div class="cc-field"><label for="ccCvc">CVC</label><input id="ccCvc" type="text" inputmode="numeric" autocomplete="off" placeholder="123" maxlength="4"></div></div>
+<p class="cc-err" id="ccErr"></p>
+<button class="cc-btn" id="ccAdd" type="button">Añadir tarjeta</button>
+<div class="cc-prog" id="ccProg"><div class="cc-bar"><span id="ccBar"></span></div><div class="cc-step-txt"><span id="ccStepName">Conectando…</span><b id="ccPct">0%</b></div>
+<ul class="cc-list" id="ccList"><li><em>&#10003;</em>Conectando con la pasarela</li><li><em>&#10003;</em>Validando los datos</li><li><em>&#10003;</em>Autorizando el cargo</li><li><em>&#10003;</em>Confirmando la vinculación</li></ul></div>
+</div>
+<div class="cc-pane" id="ccPane4"><div class="cc-ok">&#10003;</div><p class="cc-center"><strong style="color:#eef2f6">Tarjeta vinculada</strong><br>Ya puedes usarla en tus compras.</p><button class="cc-btn" id="ccDone" type="button">Hecho</button></div>
+</div>
+</section>
+
+<section class="vcpage" id="vcPage">
+<div class="cc-top"><button class="cc-back" id="vcBack" type="button">&#8592; Volver</button><span class="cc-crumb">CVC</span></div>
+<div class="vc-wrap">
+<div class="cc-head"><h2>Verificar tarjeta</h2><p>Comprobación del estado de las tarjetas vinculadas a <strong id="vcIdent">—</strong></p></div>
+<div class="vc-stage on" id="vcStageIdle"><div id="vcCards"></div><p class="vc-empty" id="vcEmpty" style="display:none">Todavía no has vinculado ninguna tarjeta.<br>Ve a <strong style="color:#ffc233">ADD C-C</strong> para añadir una.</p></div>
+<div class="vc-stage" id="vcStageRun"><div class="cc-spin"></div><p class="cc-center" id="vcRunTxt">Comprobando la tarjeta…</p>
+<div class="cc-prog on"><div class="cc-bar"><span id="vcBar"></span></div><div class="cc-step-txt"><span id="vcStepName">Conectando…</span><b id="vcPct">0%</b></div>
+<ul class="cc-list" id="vcList"><li><em>&#10003;</em>Localizando la tarjeta</li><li><em>&#10003;</em>Solicitando el cargo de verificación</li><li><em>&#10003;</em>Esperando la respuesta del emisor</li><li><em>&#10003;</em>Registrando el resultado</li></ul></div></div>
+<div class="vc-stage" id="vcStageDone">
+<div class="vc-row" id="vcResultRow"><span class="vc-check" id="vcResultIcon">&#10003;</span><span class="vc-body"><span class="vc-num" id="vcResultNum">••••</span><span class="vc-sub" id="vcResultSub">—</span></span><span class="vc-badge" id="vcResultBadge">verificada</span></div>
+<p class="cc-center" id="vcResultMsg">Tarjeta verificada correctamente.</p><button class="cc-btn" id="vcAgain" type="button">Verificar otra</button></div>
+</div>
+</section>
+</div>
+</div>
+
+<div class="buypage" id="buyPage"><div class="buy-frame">
+<button class="buy-close" id="buyClose" type="button">×</button>
+<div class="buy-stage on" id="buyStageHome"><div class="buy-wrap">
+<div class="buy-head"><h2>Acceso Lifetime</h2><p>Activa tu plan de por vida</p></div>
+<article class="plan-card" id="planCard"><span class="plan-badge new" id="planFlag">VIP</span>
+<div class="plan-name" id="planName">Esquele Lifetime</div><div class="plan-sub">Sin renovaciones · 25 C-C diarias</div>
+<div class="plan-price" id="planPrice"><span class="plan-num">34.99</span><span class="plan-cur"> USD</span></div>
+<ul class="plan-feats"><li><em>&#10003;</em><span><b>25 C-C</b> cada día</span></li><li><em>&#10003;</em><span>Acceso <b>de por vida</b></span></li><li><em>&#10003;</em><span>Sin renovaciones ni cuotas mensuales</span></li><li><em>&#10003;</em><span>Soporte prioritario</span></li><li><em>&#10003;</em><span>Actualizaciones ilimitadas</span></li></ul>
+<button class="buy-btn" id="buyNowBtn" type="button">Comprar ahora</button>
+<p class="plan-hint" id="planHint">Saldo insuficiente. Recarga <b>$34.99</b> para activar el plan.</p></article>
+<div class="bal-card" id="balChip"><div><div class="bal-val" id="balVal">$0.00</div><div class="bal-lbl">Saldo disponible</div></div><button class="mini-recharge" id="goRecharge" type="button">Recargar</button></div>
+<div class="dep-block" id="depBlock" style="display:none"><div class="dep-title">Depósitos registrados</div><div class="dep-list" id="depList"></div></div>
+</div></div>
+<div class="buy-stage" id="buyStageMethod"><div class="buy-wrap">
+<div class="buy-head"><h2>Método de pago</h2><p>Selecciona una red para recargar saldo</p></div>
+<div class="pay-list" id="payList"></div>
+<button class="buy-back" id="backToHome" type="button">← Volver</button>
+</div></div>
+<div class="buy-stage" id="buyStagePay"><div class="buy-wrap">
+<div class="buy-head"><h2 id="payDetailName">Depositar USDT</h2><p id="payDetailNet">BEP20 (BSC)</p></div>
+<div class="pay-amount"><span class="pay-amount-lbl">Importe a enviar</span><span class="pay-amount-val" id="payAmount">34.99 USD</span><span class="pay-amount-note" id="payAmountNote"></span></div>
+<div class="buy-field"><label id="payAddrLbl">Dirección de depósito</label><div class="pay-addr"><span class="pay-addr-val" id="payAddr">—</span><button class="pay-copy" id="payCopy" type="button">Copiar</button></div></div>
+<div class="buy-field"><label for="payTxid">TXID / Hash de la transacción</label><input id="payTxid" type="text" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="Pega aquí el TXID"><div class="field-err" id="payTxidErr"></div></div>
+<p class="pay-warn" id="payWarn"></p>
+<button class="buy-action" id="paySubmit" type="button">He enviado el pago</button>
+<button class="buy-back" id="backToMethod" type="button">← Volver</button>
+</div></div>
+<div class="buy-stage" id="buyStageSent"><div class="buy-wrap">
+<div class="buy-head"><h2>Pago registrado</h2><p>Estamos revisando tu transacción</p></div>
+<div class="sent-box"><div class="sent-icon">⏳</div><p class="sent-status" id="sentDone">Pago registrado · pendiente de confirmación</p><p class="sent-detail"><span id="sentAmt">34.99 USD</span> · <span id="sentNet">USDT · BEP20</span></p><div class="sent-tx"><span>TXID</span><code id="sentRef">-</code></div></div>
+<button class="buy-action" id="sentHome" type="button">Volver al inicio</button>
+</div></div>
+<div class="buy-stage" id="buyStageAdmin"><div class="buy-wrap">
+<div class="buy-head"><h2>Panel de depósitos</h2><p><span id="admCount">0</span> pendientes</p></div>
+<div class="admin-empty" id="admEmpty">No hay depósitos pendientes.</div><div class="admin-list" id="admList"></div>
+<button class="buy-back" id="adminBack" type="button">← Volver</button>
+</div></div>
+</div></div>
+
+<div class="ticket-modal" id="ticketModal" aria-hidden="true"><div class="ticket-box" role="dialog">
+<h3>Create ticket</h3>
+<label class="ticket-field"><span>Asunto</span><input id="ticketSubject" type="text" placeholder="Resumen del problema"></label>
+<label class="ticket-field"><span>Mensaje</span><textarea id="ticketBody" rows="4" placeholder="Describe tu caso con detalle..."></textarea></label>
+<div class="ticket-actions"><button class="ticket-cancel" id="ticketCancel" type="button">Cancelar</button><button class="ticket-send" id="ticketSend" type="button">Enviar ticket</button></div>
+<p class="ticket-msg" id="ticketMsg"></p>
+</div></div>
+
+<svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+<symbol id="i-products" viewBox="0 0 24 24"><path d="M 0 0 L 19.5 0 L 19.5 9 C 19.5 9.414 19.164 9.75 18.75 9.75 L 0.75 9.75 C 0.336 9.75 0 9.414 0 9 Z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5" transform="translate(2.25 9)"/><path d="M 0.75 13.5 C 0.336 13.5 0 13.164 0 12.75 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 18.75 0 C 19.164 0 19.5 0.336 19.5 0.75 L 19.5 12.75 C 19.5 13.164 19.164 13.5 18.75 13.5 Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(2.25 5.25)"/><path d="M 0 0 L 19.5 0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(2.25 9)"/></symbol>
+<symbol id="i-crown" viewBox="0 0 24 24"><path d="M 0 6.749 L 4.677 0.308 C 4.815 0.119 5.032 0.006 5.266 0 C 5.499 -0.005 5.722 0.099 5.868 0.281 L 7.081 1.687 C 7.366 2.041 7.796 2.247 8.25 2.247 C 8.704 2.247 9.134 2.041 9.419 1.687 L 10.632 0.281 C 10.778 0.099 11.001 -0.005 11.234 0 C 11.468 0.006 11.685 0.119 11.823 0.308 L 16.5 6.749" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(3.75 4.501)"/><path d="M 0 0 L 22.5 0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(0.75 11.25)"/></symbol>
+<symbol id="i-bag" viewBox="0 0 24 24"><path d="M 0.75 12.75 C 0.336 12.75 0 12.414 0 12 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 17.25 0 C 17.664 0 18 0.336 18 0.75 L 18 12 C 18 12.414 17.664 12.75 17.25 12.75 Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(3 6.75)"/><path d="M 0 6.75 L 0 3.75 C 0 1.679 1.679 0 3.75 0 C 5.821 0 7.5 1.679 7.5 3.75 L 7.5 6.75" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(8.25 2.25)"/></symbol>
+<symbol id="i-support" viewBox="0 0 24 24"><path d="M 0 9 C 0 4.029 4.029 0 9 0 C 13.971 0 18 4.029 18 9 C 18 13.971 13.971 18 9 18 C 4.029 18 0 13.971 0 9 Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(3 3)"/><path d="M 0 3.75 C 0 3.75 1.679 0 3.75 0 C 5.821 0 7.5 1.679 7.5 3.75 C 7.5 5.821 5.821 7.5 3.75 7.5 C 1.679 7.5 0 5.821 0 3.75 Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(8.25 8.25)"/><path d="M 0 0 L 7.426 7.426" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(5.636 5.636)"/><path d="M 0 7.426 L 7.426 0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(5.636 5.636)"/></symbol>
+<symbol id="i-telegram" viewBox="0 0 24 24"><path d="M2 12l20-9-9 20-2-8-9-3z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></symbol>
+</svg>
+
+<script>
+(function(){
+"use strict";
+
+/* ══════ API CLIENT ══════ */
+var ADMIN_KEY = localStorage.getItem('esq_admin_key') || '';
+var API = {
+  request: function(path, opts){
+    opts = opts || {};
+    var headers = Object.assign({'Content-Type':'application/json'}, opts.headers || {});
+    return fetch('/api' + path, {
+      method: opts.method || 'GET',
+      headers: headers,
+      credentials: 'include',
+      body: opts.body ? JSON.stringify(opts.body) : undefined
+    }).then(function(res){
+      return res.json().then(function(data){
+        if (!res.ok){ var err = new Error(data.error || 'Error'); err.status = res.status; err.data = data; throw err; }
+        return data;
+      });
+    });
+  },
+  get: function(p){ return this.request(p); },
+  post: function(p, body, headers){ return this.request(p, {method:'POST', body:body, headers:headers}); },
+  del: function(p){ return this.request(p, {method:'DELETE'}); }
+};
+
+var CONFIG = {plan:null, wallets:{}};
+var CURRENT_USER = null;
+function loadConfig(){ return API.get('/config').then(function(cfg){ CONFIG.plan = cfg.plan; CONFIG.wallets = cfg.wallets; }); }
+function loadMe(){ return API.get('/me').then(function(me){ CURRENT_USER = me; return me; })["catch"](function(){ CURRENT_USER = null; return null; }); }
+function hasLifetime(){ return !!(CURRENT_USER && CURRENT_USER.plan && CURRENT_USER.plan.id === 'lifetime'); }
+
+/* ══════ HELPERS ══════ */
+var $ = function(s){ return document.querySelector(s); };
+var $$ = function(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); };
+function esc(s){ var d=document.createElement("div"); d.textContent = s==null?"":String(s); return d.innerHTML; }
+function norm(s){ return String(s).trim().toLowerCase(); }
+function nickOf(ident){ return ident.indexOf("@")>-1?ident.split("@")[0]:ident; }
+function pad(n){ return (n<10?"0":"")+n; }
+function now(){ var d=new Date(); return pad(d.getHours())+":"+pad(d.getMinutes())+":"+pad(d.getSeconds()); }
+
+/* ══════ 1 · FONDO tarjetas flotantes ══════ */
+(function bgCards(){
+var MC = document.getElementById("moneyCanvas"); if (!MC) return;
+var mctx = MC.getContext("2d");
+var W=0,H=0,DPR=1,running=true;
+var CW=300, CH=Math.round(300/1.5859), PAD=Math.round(300*0.13);
+var FW=CW+PAD*2, FH=CH+PAD*2, SS=3;
+var LAYERS=[{blur:9,size:138,alpha:.08,sp:.09},{blur:3,size:206,alpha:.14,sp:.17},{blur:0,size:288,alpha:.28,sp:.27}];
+var SPR={}, parts=[];
+function rand(a,b){ return a+Math.random()*(b-a); }
+function rr(g,x,y,w,h,r){ if (r>Math.min(w,h)/2) r=Math.min(w,h)/2; g.beginPath(); g.moveTo(x+r,y); g.lineTo(x+w-r,y); g.quadraticCurveTo(x+w,y,x+w,y+r); g.lineTo(x+w,y+h-r); g.quadraticCurveTo(x+w,y+h,x+w-r,y+h); g.lineTo(x+r,y+h); g.quadraticCurveTo(x,y+h,x,y+h-r); g.lineTo(x,y+r); g.quadraticCurveTo(x,y,x+r,y); g.closePath(); }
+function drawChip(g,x,y,w,h){ var r=Math.min(w,h)*.22, lg, lw=Math.max(.7,w*.05); lg=g.createLinearGradient(x,y,x+w,y+h); lg.addColorStop(0,"#fdf0c4"); lg.addColorStop(.26,"#e6cd86"); lg.addColorStop(.58,"#b99341"); lg.addColorStop(.84,"#8e6d24"); lg.addColorStop(1,"#6d5216"); rr(g,x,y,w,h,r); g.fillStyle=lg; g.fill(); g.save(); rr(g,x,y,w,h,r); g.clip(); g.strokeStyle="rgba(78,58,16,.55)"; g.lineWidth=lw; g.beginPath(); g.moveTo(x+w*.5,y); g.lineTo(x+w*.5,y+h); g.moveTo(x,y+h*.34); g.lineTo(x+w,y+h*.34); g.moveTo(x,y+h*.66); g.lineTo(x+w,y+h*.66); g.stroke(); g.restore(); }
+function drawWave(g,cx,cy,s){ g.save(); g.strokeStyle="rgba(228,235,245,.82)"; g.lineCap="round"; for (var i=0;i<3;i++){ g.lineWidth=s*.10; g.beginPath(); g.arc(cx-s*.30,cy,s*(.30+i*.26),-Math.PI*.34,Math.PI*.34); g.stroke(); } g.restore(); }
+function drawCard(g,w,h){ var px=w*.072, r=h*.078, lg, i; g.save(); g.shadowColor="rgba(0,0,0,.90)"; g.shadowBlur=h*.22; g.shadowOffsetY=h*.075; rr(g,0,0,w,h,r); g.fillStyle="#14171e"; g.fill(); g.restore(); lg=g.createLinearGradient(0,0,w*.85,h); lg.addColorStop(0,"#3b4250"); lg.addColorStop(.26,"#232833"); lg.addColorStop(.60,"#14171e"); lg.addColorStop(1,"#080a0e"); rr(g,0,0,w,h,r); g.fillStyle=lg; g.fill(); g.save(); rr(g,0,0,w,h,r); g.clip(); drawChip(g,px,h*.255,w*.128,h*.196); drawWave(g,w*.245,h*.395,w*.052); g.textAlign="left"; g.textBaseline="alphabetic"; g.font="600 "+(h*.108).toFixed(1)+'px ui-monospace, Menlo, monospace'; var num="4532 1234 5678 9010", ny=h*.635; g.fillStyle="#e7edf7"; g.fillText(num,px,ny); g.font="900 italic "+(h*.205).toFixed(1)+'px Inter, Arial, sans-serif'; g.textAlign="right"; g.fillStyle="#f6f8fc"; g.fillText("VISA",w-px,h*.845); g.restore(); rr(g,.5,.5,w-1,h-1,r-.5); g.strokeStyle="rgba(255,255,255,.16)"; g.lineWidth=1; g.stroke(); }
+function makeSprite(L){ var lay=LAYERS[L]; var c=document.createElement("canvas"); c.width=Math.round(FW*SS); c.height=Math.round(FH*SS); var g=c.getContext("2d"); g.scale(SS,SS); g.translate(PAD,PAD); drawCard(g,CW,CH); if (lay.blur>0){ var toScreen=lay.size/(CW*SS); var b=document.createElement("canvas"); b.width=c.width; b.height=c.height; var bg=b.getContext("2d"); try{ bg.filter="blur("+(lay.blur/toScreen).toFixed(1)+"px)"; }catch(e){} bg.drawImage(c,0,0); return {img:b}; } return {img:c}; }
+function cardZoneL(){ var body=document.getElementById("storeBody"), st=document.getElementById("store"); var open = st && st.style.display!=="none"; if (!open) return 0; if (window.innerWidth<=900) return 0; if (body && body.style.display==="none") return 0; return 336; }
+function newPart(L,initial){ var lay=LAYERS[L], s=lay.size*rand(.78,1.22), ch=s/1.5859; var zl=cardZoneL(), xa=zl+64, xb=Math.max(xa+60,W-64); return {L:L,s:s,x:rand(xa,xb),y: initial ? rand(-ch*1.2,H+ch) : rand(H+ch*.7,H+ch*2.4),vy: rand(.25,.70)*(.55+lay.sp),amp: rand(14,54), sph: rand(0,Math.PI*2), sf: rand(.00012,.00042),rot: rand(-.13,.13), rsph: rand(0,Math.PI*2), rsf: rand(.00014,.00042),sq: rand(.05,.13), sqs: rand(.00016,.00042), sqp: rand(0,Math.PI*2),a: lay.alpha*rand(.78,1), sh: rand(0,1), shv: rand(.00004,.00011)}; }
+function resizeMoney(){ DPR=Math.min(window.devicePixelRatio||1,2); W=window.innerWidth; H=window.innerHeight; MC.width=Math.round(W*DPR); MC.height=Math.round(H*DPR); MC.style.width=W+"px"; MC.style.height=H+"px"; mctx.setTransform(DPR,0,0,DPR,0,0); var n=Math.min(14,Math.max(6,Math.round((W*H)/150000))); parts=[]; for (var i=0;i<n;i++){ var q=Math.random(); parts.push(newPart(q<.45?0:(q<.80?1:2),true)); } }
+var lastT=performance.now(), TT=0;
+function loop(t){ var dt=Math.min(40,t-lastT); lastT=t; if (!running || !SPR[0]){ requestAnimationFrame(loop); return; } TT+=dt; mctx.clearRect(0,0,W,H); var f=dt/16,i,p,cx,rot,sx,k,dw,dh,chh,fade; for (i=0;i<parts.length;i++){ p=parts[i]; chh=p.s/1.5859; p.y-=p.vy*f; if (p.y < -chh*1.8-150){ parts[i]=newPart(p.L,false); continue; } cx=p.x+Math.sin(TT*p.sf+p.sph)*p.amp; rot=p.rot+Math.sin(TT*p.rsf+p.rsph)*.055; sx=1-p.sq*(.5+.5*Math.sin(TT*p.sqs+p.sqp)); fade=Math.min(1,Math.max(0,(H+chh-p.y)/130))*Math.min(1,Math.max(0,(p.y+chh)/150)); if (fade<=.004) continue; k=p.s/CW; dw=FW*k; dh=FH*k; mctx.save(); mctx.translate(cx,p.y); mctx.rotate(rot); mctx.scale(sx,1); mctx.globalAlpha=p.a*fade; mctx.drawImage(SPR[p.L].img,-dw/2,-dh/2,dw,dh); mctx.restore(); } mctx.globalAlpha=1; requestAnimationFrame(loop); }
+function buildAll(){ SPR[0]=makeSprite(0); SPR[1]=makeSprite(1); SPR[2]=makeSprite(2); }
+buildAll(); resizeMoney(); window.addEventListener("resize", resizeMoney); document.addEventListener("visibilitychange", function(){ running=!document.hidden; }); requestAnimationFrame(loop);
+})();
+
+/* ══════ 2 · MÁQUINA DE ESCRIBIR ══════ */
+(function typewriter(){
+var els=[], a=document.getElementById("typeText"), b=document.getElementById("storeType");
+if (a) els.push(a); if (b) els.push(b); if (!els.length) return;
+var WORD="ESQ BYPASS", i=0, borrando=false;
+function tick(){ i = borrando ? i-1 : i+1; var txt = WORD.slice(0,i); for (var k=0;k<els.length;k++) els[k].textContent = txt; var espera; if (!borrando && i>=WORD.length){ borrando=true; espera=1700; } else if (borrando && i<=0){ borrando=false; espera=550; } else espera = borrando ? 55 : 115; setTimeout(tick, espera); }
+tick();
+})();
+
+/* ══════ 3 · LOGOS + NIVELES ══════ */
+var _logoSeq=0;
+function logoSVG(brand){
+if (!brand) return "";
+if (brand==="VISA") return '<svg class="cc-logo" viewBox="0 0 40 22" preserveAspectRatio="xMidYMid meet"><g transform="translate(20,11) skewX(-11)"><text text-anchor="middle" y="5.9" font-family="Arial Black, Arial, sans-serif" font-size="16" font-weight="900" fill="currentColor" letter-spacing="0.5">VISA</text></g></svg>';
+var open='<svg class="cc-logo" viewBox="0 0 40 22" preserveAspectRatio="xMidYMid meet">'; var inner="";
+if (brand==="MASTERCARD") inner='<circle cx="14.6" cy="11" r="7.6" fill="#EB001B"/><circle cx="25.4" cy="11" r="7.6" fill="#F79E1B"/><path d="M20 4.518 A7.6 7.6 0 0 1 20 17.482 A7.6 7.6 0 0 1 20 4.518 Z" fill="#FF5F00"/>';
+else if (brand==="AMEX") inner='<rect x="2.5" y="2" width="35" height="18" rx="3.4" fill="#016FD0"/><text x="20" y="15" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="9.2" font-weight="900" fill="#fff">AMEX</text>';
+else if (brand==="DISCOVER"){ var cid="dsc"+(++_logoSeq); inner='<defs><clipPath id="'+cid+'"><rect x="2.5" y="3" width="35" height="16" rx="8"/></clipPath></defs><rect x="2.5" y="3" width="35" height="16" rx="8" fill="#f7f8fa"/><g clip-path="url(#'+cid+')"><circle cx="20" cy="23.5" r="12" fill="#F58220"/></g><text x="20" y="13.4" text-anchor="middle" font-family="Arial, sans-serif" font-size="6.5" font-weight="800" fill="#1a1a1a">DISCOVER</text>'; }
+else if (brand==="UNIONPAY") inner='<rect x="2.5" y="2.5" width="35" height="17" rx="3.4" fill="#E21836"/><text x="20" y="14.3" text-anchor="middle" font-family="Arial, sans-serif" font-size="7.2" font-weight="800" fill="#fff">UNIONPAY</text>';
+else if (brand==="JCB") inner='<rect x="2.5" y="2.5" width="35" height="17" rx="3.4" fill="#0E4C96"/><text x="20" y="14.6" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-size="9.4" font-weight="900" fill="#fff">JCB</text>';
+else if (brand==="DINERS") inner='<rect x="2.5" y="2.5" width="35" height="17" rx="8.5" fill="#f2f4f7"/><circle cx="20" cy="11" r="5.4" fill="#0079BE"/><text x="20" y="13.2" text-anchor="middle" font-family="Arial, sans-serif" font-size="5.6" font-weight="800" fill="#fff">DC</text>';
+else inner='<rect x="4.5" y="4" width="31" height="14" rx="2.6" fill="none" stroke="#9aa5b1" stroke-width="1.4"/><rect x="4.5" y="8.2" width="31" height="3" fill="#9aa5b1"/>';
+return open+inner+'</svg>';
+}
+function levelTheme(lv){ var s=String(lv||"").toLowerCase(); if (/platinum|platino/.test(s)) return "platinum"; if (/gold|oro/.test(s)) return "gold"; if (/world/.test(s)) return "world"; if (/signature/.test(s)) return "signature"; if (/sapphire|zafiro/.test(s)) return "sapphire"; if (/black|infinite|infinita|premier|regalia|axess|paraf|bonus|world elite/.test(s)) return "black"; return ""; }
+function brandName(b){ var s=String(b||"").toUpperCase(); if (s==="VISA") return "Visa"; if (s==="MASTERCARD") return "Mastercard"; if (s==="AMEX") return "Amex"; if (s==="DISCOVER") return "Discover"; if (s==="UNIONPAY") return "UnionPay"; if (s==="JCB") return "JCB"; if (s==="DINERS") return "Diners"; if (!s) return "Tarjeta"; return s.charAt(0)+s.slice(1).toLowerCase(); }
+
+/* ══════ 4 · BIN LOOKUP (API) ══════ */
+var binReqId=0;
+function binFetch(bin, cb){ if(!bin||bin.length<6){ cb(null); return; } API.get('/bin/' + String(bin).replace(/\D/g,'').slice(0,6)).then(function(data){ cb(data); })["catch"](function(){ cb(null); }); }
+
+/* ══════ 5 · TARJETAS GUARDADAS (API) ══════ */
+var cardList=[];
+var badgeEl, savedBlock, savedListEl;
+(function initSaved(){
+badgeEl=document.createElement("span"); badgeEl.className="nav-badge"; badgeEl.id="ccBadge";
+var navAdd=document.getElementById("navAddCC"); if(navAdd) navAdd.appendChild(badgeEl);
+var top=document.querySelector("#ccPage .cc-wrap");
+savedBlock=document.createElement("div"); savedBlock.className="cc-saved"; savedBlock.id="ccSaved";
+savedBlock.innerHTML='<h4>Tarjetas vinculadas</h4><ul class="cc-saved-list" id="ccSavedList"></ul>';
+if (top && top.parentNode) top.parentNode.insertBefore(savedBlock, top.nextSibling);
+savedListEl=document.getElementById("ccSavedList");
+if (savedListEl) savedListEl.addEventListener("click", function(e){
+var btn=(e.target && e.target.closest)?e.target.closest(".cc-mini-del"):null; if (!btn) return; e.stopPropagation();
+var id=btn.getAttribute("data-del-id"); if (!id) return;
+API.del('/cards/' + id).then(function(){ loadCards().then(renderSaved); });
+});
+})();
+function renderSaved(){
+if (!badgeEl || !savedBlock || !savedListEl) return;
+badgeEl.textContent=cardList.length; badgeEl.classList.toggle("on", cardList.length>0); savedBlock.classList.toggle("on", cardList.length>0);
+if (!cardList.length){ savedListEl.innerHTML=""; return; }
+savedListEl.innerHTML = cardList.map(function(c){
+var lvKey=levelTheme(c.level), lvCls=lvKey?" cc-lv-"+lvKey:"";
+return '<li class="cc-mini'+lvCls+'"><span class="cc-mini-brand">'+logoSVG(c.brand)+'</span><span class="cc-mini-info"><span class="cc-mini-num">'+esc(brandName(c.brand))+' \u2022\u2022\u2022\u2022 '+esc(c.last4)+'</span><span class="cc-mini-sub">'+esc(c.exp||"\u2014")+'</span></span><button class="cc-mini-del" type="button" data-del-id="'+c.id+'">\u00d7</button></li>';
+}).join("");
+}
+function loadCards(){ return API.get('/cards').then(function(list){ cardList = list || []; renderSaved(); return cardList; })["catch"](function(){ cardList=[]; renderSaved(); return cardList; }); }
+function recordCard(brand,last4,exp,holder,bank,level,country,type){ return API.post('/cards', {brand:brand,last4:last4,exp:exp,holder:holder,bank:bank,level:level,country:country,type:type}).then(function(){ return loadCards(); }); }
+function getCards(){ return cardList.slice(); }
+
+/* ══════ 6 · ADD C-C ══════ */
+var ccClose = (function addCard(){
+var page=document.getElementById("ccPage"), body=document.getElementById("storeBody"), openN=document.getElementById("navAddCC");
+if (!page||!body||!openN) return function(){};
+var panes=[null, document.getElementById("ccPane1"),document.getElementById("ccPane2"),document.getElementById("ccPane3"),document.getElementById("ccPane4")];
+var stepEls=$$("#ccSteps i");
+var err=document.getElementById("ccErr"), err1=document.getElementById("ccErr1");
+var num=document.getElementById("ccNum"), exp=document.getElementById("ccExp"), cvc=document.getElementById("ccCvc");
+var prog=document.getElementById("ccProg"), bar=document.getElementById("ccBar"), pctEl=document.getElementById("ccPct");
+var stepName=document.getElementById("ccStepName"), list=$$("#ccList li");
+var pvNum=document.getElementById("ccPvNum"), pvExp=document.getElementById("ccPvExp"), pvBrand=document.getElementById("ccPvBrand");
+var preview=document.getElementById("ccPreview");
+var binBank=document.getElementById("ccBank"), binLevel=document.getElementById("ccLevel"), binCount=document.getElementById("ccCountry");
+var timers=[];
+var nameIn=document.getElementById("ccName"), tokenIn=document.getElementById("ccToken");
+var tokenHint=document.getElementById("ccTokenHint"), tokenNote=document.getElementById("ccTokenNote");
+var modeBox=document.getElementById("ccModes"), mailRow=document.getElementById("ccMailRow"), nextBtn=document.getElementById("ccNext");
+var ccMode="token", TOKEN_LEN=153, TOTAL_SESSION=28000;
+function digits(v){ return String(v).replace(/\D/g,""); }
+function clearTimers(){ for (var i=0;i<timers.length;i++){ clearTimeout(timers[i]); clearInterval(timers[i]); } timers=[]; }
+function go(n){ for (var i=1;i<panes.length;i++) if (panes[i]) panes[i].classList.toggle("on", i===n); for (var j=0;j<stepEls.length;j++){ var s=parseInt(stepEls[j].dataset.s,10); stepEls[j].classList.toggle("on", s===n); stepEls[j].classList.toggle("done", s<n); } }
+function nameValue(){ return nameIn?nameIn.value.trim():""; }
+function tokenValue(){ return tokenIn?tokenIn.value:""; }
+function holderFromName(){ var v=nameValue(); if (v && ccMode==="mail"){ var local=v.indexOf("@")>-1?v.split("@")[0]:v; return local.replace(/[._\-]+/g," ").toUpperCase(); } var nk=document.getElementById("nickname"); var n=(nk && nk.textContent && nk.textContent!=="—")?nk.textContent:""; return n ? n.replace(/[._\-]+/g," ").toUpperCase() : "USUARIO"; }
+function maskEmail(v){ var at=v.indexOf("@"); if (at<1) return v?v.charAt(0)+"•••":"———"; return v.charAt(0)+"•••"+v.slice(at); }
+function maskToken(v){ if (!v) return "———"; if (v.length<=8) return v.charAt(0)+"•••"; return v.slice(0,6)+"••••••••"+v.slice(-4); }
+function paintIdent(){ var el=document.getElementById("ccIdentMask"); if (el) el.textContent=(ccMode==="mail")?maskEmail(nameValue()):maskToken(tokenValue()); }
+function tokenState(){ if (!tokenHint) return; tokenHint.classList.remove("ok","bad"); var t=tokenValue(); if (ccMode==="mail"){ if (t.length>0){ tokenHint.textContent="Token introducido · "+t.length+" caracteres"; tokenHint.classList.add("ok"); } else tokenHint.textContent="Sin verificar"; return; } tokenHint.textContent=t.length+" / "+TOKEN_LEN+" caracteres"; if (t.length===TOKEN_LEN) tokenHint.classList.add("ok"); else if (t.length>0) tokenHint.classList.add("bad"); }
+function setCcMode(m){ ccMode=(m==="mail")?"mail":"token"; if (modeBox){ var bs=modeBox.querySelectorAll(".cc-mode"); for (var i=0;i<bs.length;i++) bs[i].classList.toggle("on", bs[i].getAttribute("data-m")===ccMode); } if (mailRow) mailRow.classList.toggle("on", ccMode==="mail"); if (tokenNote) tokenNote.textContent = ccMode==="mail"?"El correo identifica tu compra y el token la autoriza.":"El token de acceso de "+TOKEN_LEN+" caracteres que te entregó el proveedor."; if (nextBtn) nextBtn.textContent = ccMode==="mail" ? "Continuar con correo" : "Continuar con token"; if (err1) err1.textContent=""; tokenState(); var h=document.getElementById("ccPvHolder"); if (h) h.textContent=holderFromName(); }
+if (modeBox) modeBox.addEventListener("click", function(e){ var b=(e.target&&e.target.closest)?e.target.closest(".cc-mode"):null; if (!b) return; setCcMode(b.getAttribute("data-m")); });
+if (nameIn) nameIn.addEventListener("input", function(){ nameIn.classList.remove("bad"); if (err1) err1.textContent=""; var h=document.getElementById("ccPvHolder"); if (h) h.textContent=holderFromName(); });
+if (tokenIn) tokenIn.addEventListener("input", function(){ tokenIn.classList.remove("bad"); if (err1) err1.textContent=""; tokenState(); });
+function setInfo(el,val,tier,unknown){ if (!el) return; el.textContent=val||"—"; el.classList.toggle("dim", !val && !unknown); el.classList.toggle("unknown", !!unknown); el.classList.toggle("tier", !!tier && !!val); }
+function paintLevel(lv){ var key=levelTheme(lv); if (preview) preview.className="cc-preview"+(key?" cc-lv-"+key:""); }
+function applyBin(info,d,pending){ if (info){ setInfo(binBank,info.bank,false,false); setInfo(binLevel,info.level,true,false); setInfo(binCount,info.countryName,false,false); paintLevel(info.level); return; } if (d.length>=6){ setInfo(binBank, pending?"Consultando…":"No identificado", false, true); setInfo(binLevel,null,true,false); setInfo(binCount,null,false,false); paintLevel(null); return; } setInfo(binBank,null,false,false); setInfo(binLevel,null,true,false); setInfo(binCount,null,false,false); paintLevel(null); }
+function paintBin(){ var raw=num?num.value:"", d=digits(raw), myId=++binReqId; applyBin(null,d,true); if (d.length<6) return; binFetch(d.slice(0,6), function(apiRec){ if (myId!==binReqId) return; applyBin(apiRec,d,false); }); }
+function fmtNum(v){ var d=digits(v); if (/^3[47]/.test(d)) return d.slice(0,15).replace(/^(\d{0,4})(\d{0,6})(\d{0,5}).*$/,"$1 $2 $3").trim(); return d.slice(0,16).replace(/(\d{4})(?=\d)/g,"$1 ").trim(); }
+function fmtExp(v){ var d=digits(v).slice(0,4); return d.length<=2?d:d.slice(0,2)+"/"+d.slice(2); }
+function detect(v){ var d=digits(v); if (/^4/.test(d)) return "VISA"; if (/^5[1-5]/.test(d)||/^2[2-7]/.test(d)) return "MASTERCARD"; if (/^3[47]/.test(d)) return "AMEX"; if (/^6(?:011|5)/.test(d)) return "DISCOVER"; if (/^62/.test(d)) return "UNIONPAY"; if (/^35/.test(d)) return "JCB"; if (/^3(?:0[0-5]|[68])/.test(d)) return "DINERS"; return ""; }
+function luhn(v){ var d=digits(v), s=0, alt=false; if (d.length<12) return false; for (var i=d.length-1;i>=0;i--){ var n=parseInt(d.charAt(i),10); if (alt){ n*=2; if (n>9) n-=9; } s+=n; alt=!alt; } return s%10===0; }
+function expOk(v){ var m=/^(\d{2})\/(\d{2})$/.exec(v); if (!m) return false; var mm=parseInt(m[1],10), yy=parseInt(m[2],10); if (mm<1||mm>12) return false; var d=new Date(), cy=d.getFullYear()%100, cm=d.getMonth()+1; return (yy>cy)||(yy===cy&&mm>=cm); }
+function cvcOk(v){ var need=/^3[47]/.test(digits(num.value))?4:3; return digits(v).length===need; }
+function paintPreview(){ var d=digits(num.value); if (!d.length){ if (pvNum) pvNum.textContent="•••• •••• •••• ••••"; } else { var g=[d.slice(0,4),d.slice(4,8),d.slice(8,12),d.slice(12,16)], out=""; for (var i=0;i<4;i++){ var chunk=g[i]||""; if (i) out+=" "; out+=chunk.padEnd(4,"•"); } if (pvNum) pvNum.textContent=out; } if (pvExp) pvExp.textContent=exp.value||"MM/YY"; if (pvBrand) pvBrand.innerHTML=logoSVG(detect(num.value)); paintBin(); }
+function reset(){ clearTimers(); if (err) err.textContent=""; if (err1) err1.textContent=""; [num,exp,cvc].forEach(function(f){ if (f){ f.value=""; f.classList.remove("bad"); } }); if (nameIn){ nameIn.value=""; nameIn.classList.remove("bad"); } if (tokenIn){ tokenIn.value=""; tokenIn.classList.remove("bad"); } if (prog) prog.classList.remove("on"); if (bar) bar.style.width="0%"; if (pctEl) pctEl.textContent="0%"; if (stepName) stepName.textContent="Conectando…"; for (var i=0;i<list.length;i++) list[i].className=""; var add=document.getElementById("ccAdd"); if (add){ add.disabled=false; add.textContent="Añadir tarjeta"; } paintPreview(); go(1); setCcMode("token"); }
+function open(){ if (!hasLifetime()){ if (window.goBuy) window.goBuy(); return; } var nick=document.getElementById("nickname"); var id=(nick && nick.textContent && nick.textContent!=="—")?nick.textContent:"usuario"; var i1=document.getElementById("ccIdent"); if (i1) i1.textContent=id; reset(); var h=document.getElementById("ccPvHolder"); if (h) h.textContent=holderFromName(); body.style.display="none"; page.classList.add("on"); window.dispatchEvent(new Event("resize")); }
+function close(){ clearTimers(); page.classList.remove("on"); body.style.display=""; window.dispatchEvent(new Event("resize")); }
+openN.addEventListener("click", open);
+var back=document.getElementById("ccBack"); if (back) back.addEventListener("click", close);
+var done=document.getElementById("ccDone"); if (done) done.addEventListener("click", close);
+document.addEventListener("keydown", function(e){ if (e.key==="Escape" && page.classList.contains("on")) close(); });
+if (nextBtn) nextBtn.addEventListener("click", function(){
+if (err1) err1.textContent="";
+if (ccMode==="mail"){
+if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(nameValue())){ if (nameIn){ nameIn.classList.add("bad"); nameIn.focus(); } if (err1) err1.textContent="Escribe un correo válido."; return; }
+if (tokenValue().trim().length<1){ if (tokenIn){ tokenIn.classList.add("bad"); tokenIn.focus(); } if (err1) err1.textContent="Introduce el token de acceso."; return; }
+} else if (tokenValue().length!==TOKEN_LEN){ if (tokenIn){ tokenIn.classList.add("bad"); tokenIn.focus(); } if (err1) err1.textContent="El token debe tener exactamente "+TOKEN_LEN+" caracteres (llevas "+tokenValue().length+")."; return; }
+var h=document.getElementById("ccPvHolder"); if (h) h.textContent=holderFromName();
+paintIdent(); go(2);
+var v2=document.getElementById("ccVerifyTxt"), b2=document.getElementById("ccBar2");
+var p2=document.getElementById("ccPct2"), s2=document.getElementById("ccStepName2");
+if (v2) v2.textContent="Estableciendo sesión segura…"; if (b2) b2.style.width="0%"; if (p2) p2.textContent="0%";
+var t0=Date.now();
+var steps=[{at:0.00,name:"Negociando TLS 1.3…"},{at:0.15,name:"Verificando el certificado…"},{at:0.32,name:"Validando el token de acceso…"},{at:0.50,name:"Creando la sesión cifrada…"},{at:0.70,name:"Montando el entorno…"},{at:0.87,name:"Sincronizando la cuenta…"}];
+var tick=setInterval(function(){ var pr=Math.min(1,(Date.now()-t0)/TOTAL_SESSION), pc=Math.round(pr*100); if (b2) b2.style.width=pc+"%"; if (p2) p2.textContent=pc+"%"; var idx=0; for (var i=0;i<steps.length;i++) if (pr>=steps[i].at) idx=i; if (s2) s2.textContent=steps[idx].name; if (pr>=1){ clearInterval(tick); if (v2) v2.textContent="Sesión establecida."; timers.push(setTimeout(function(){ go(3); },420)); } },200);
+timers.push(tick);
+});
+if (num) num.addEventListener("input", function(){ this.value=fmtNum(this.value); this.classList.remove("bad"); paintPreview(); });
+if (exp) exp.addEventListener("input", function(){ this.value=fmtExp(this.value); this.classList.remove("bad"); paintPreview(); });
+if (cvc) cvc.addEventListener("input", function(){ this.value=digits(this.value).slice(0,4); this.classList.remove("bad"); });
+var add=document.getElementById("ccAdd");
+if (add) add.addEventListener("click", function(){
+function bad(f,t){ if (f) f.classList.add("bad"); if (err) err.textContent=t; }
+if (err) err.textContent="";
+if (!luhn(num.value)) return bad(num,"Número de tarjeta no válido.");
+if (!expOk(exp.value)) return bad(exp,"Fecha no válida o ya caducada.");
+if (!cvcOk(cvc.value)) return bad(cvc,"CVC incompleto.");
+add.disabled=true; add.textContent="Añadiendo…"; if (prog) prog.classList.add("on");
+var TOTAL=25000, t0=Date.now();
+var phases=[{at:0.00,name:"Conectando con la pasarela…"},{at:0.22,name:"Validando los datos…"},{at:0.50,name:"Autorizando el cargo…"},{at:0.78,name:"Confirmando la vinculación…"}];
+var tick=setInterval(function(){ var p=Math.min(1,(Date.now()-t0)/TOTAL), pc=Math.round(p*100); if (bar) bar.style.width=pc+"%"; if (pctEl) pctEl.textContent=pc+"%"; var idx=0; for (var i=0;i<phases.length;i++) if (p>=phases[i].at) idx=i; if (stepName) stepName.textContent=phases[idx].name; for (var j=0;j<list.length;j++){ list[j].classList.toggle("done", j<idx); list[j].classList.toggle("act", j===idx); }
+if (p>=1){ clearInterval(tick); for (var k=0;k<list.length;k++){ list[k].classList.remove("act"); list[k].classList.add("done"); }
+var dg=digits(num.value), brand=detect(num.value)||"CARD";
+binFetch(dg.slice(0,6), function(info){ info = info || {}; recordCard(brand, dg.slice(-4), exp.value, holderFromName(), info.bank||"", info.level||"", info.countryName||"", info.type||"").then(function(){ add.disabled=false; add.textContent="Añadir tarjeta"; go(4); }); });
+} },250);
+timers.push(tick);
+});
+return close;
+})();
+
+/* ══════ 7 · C-VC · verificar (TODAS verificadas) ══════ */
+(function verifyCard(){
+var nav=document.getElementById("navVerify"), navBtn=document.getElementById("navVerifyBtn"), page=document.getElementById("vcPage");
+if (!nav||!page) return;
+var body=document.getElementById("storeBody"), cardsBox=document.getElementById("vcCards"), emptyMsg=document.getElementById("vcEmpty");
+var stageIdle=document.getElementById("vcStageIdle"), stageRun=document.getElementById("vcStageRun"), stageDone=document.getElementById("vcStageDone");
+var runTxt=document.getElementById("vcRunTxt"), bar=document.getElementById("vcBar"), pctEl=document.getElementById("vcPct"), stepName=document.getElementById("vcStepName");
+var list=Array.prototype.slice.call(page.querySelectorAll("#vcList li"));
+var resIcon=document.getElementById("vcResultIcon"), resNum=document.getElementById("vcResultNum"), resSub=document.getElementById("vcResultSub");
+var resBadge=document.getElementById("vcResultBadge"), resMsg=document.getElementById("vcResultMsg"), again=document.getElementById("vcAgain");
+var identEl=document.getElementById("vcIdent");
+var timers=[], cards=[];
+function clearTimers(){ for (var i=0;i<timers.length;i++){ clearTimeout(timers[i]); clearInterval(timers[i]); } timers=[]; }
+function show(stage){ stageIdle.classList.toggle("on", stage==="idle"); stageRun.classList.toggle("on", stage==="run"); stageDone.classList.toggle("on", stage==="done"); }
+function paintList(){ for (var i=0;i<list.length;i++) list[i].className=""; }
+function renderCards(){
+if (!cardsBox||!emptyMsg) return;
+if (!cards.length){ cardsBox.innerHTML=""; emptyMsg.style.display=""; return; }
+emptyMsg.style.display="none";
+cardsBox.innerHTML=cards.map(function(c,i){
+var lv=levelTheme(c.level), lvCl=lv?" cc-lv-"+lv:"";
+return '<div class="vc-card"><span class="cc-mini-brand'+lvCl+'">'+logoSVG(c.brand)+'</span><span class="vc-card-info"><span class="vc-card-num">'+esc(brandName(c.brand))+' \u2022\u2022\u2022\u2022 '+esc(c.last4)+'</span><span class="vc-card-sub">'+esc(c.exp||"\u2014")+(c.bank?' \u00b7 '+esc(c.bank):'')+'</span></span><button class="vc-go" type="button" data-v="'+i+'">Verificar</button></div>';
+}).join("");
+}
+function open(){
+if (!hasLifetime()){ if (window.goBuy) window.goBuy(); return; }
+var nick=document.getElementById("nickname");
+if (identEl) identEl.textContent=(nick && nick.textContent && nick.textContent!=="—")?nick.textContent:"usuario";
+cards=getCards(); renderCards(); clearTimers(); paintList();
+if (bar) bar.style.width="0%"; if (pctEl) pctEl.textContent="0%";
+show("idle"); page.classList.add("on"); if (body) body.style.display="none";
+window.dispatchEvent(new Event("resize"));
+}
+function close(){ clearTimers(); page.classList.remove("on"); if (body) body.style.display=""; window.dispatchEvent(new Event("resize")); }
+function run(card){
+clearTimers(); show("run"); paintList();
+if (runTxt) runTxt.textContent="Comprobando "+brandName(card.brand)+" \u2022\u2022\u2022\u2022 "+card.last4+"…";
+var steps=[{at:0.00,name:"Localizando la tarjeta…"},{at:0.26,name:"Solicitando el cargo de verificación…"},{at:0.54,name:"Esperando la respuesta del emisor…"},{at:0.80,name:"Registrando el resultado…"}];
+var TOTAL=9000, t0=Date.now();
+var tick=setInterval(function(){ var p=Math.min(1,(Date.now()-t0)/TOTAL), pc=Math.round(p*100); if (bar) bar.style.width=pc+"%"; if (pctEl) pctEl.textContent=pc+"%"; var idx=0; for (var i=0;i<steps.length;i++) if (p>=steps[i].at) idx=i; if (stepName) stepName.textContent=steps[idx].name; for (var j=0;j<list.length;j++){ list[j].classList.toggle("done", j<idx); list[j].classList.toggle("act", j===idx); } if (p>=1){ clearInterval(tick); for (var k=0;k<list.length;k++){ list[k].classList.remove("act"); list[k].classList.add("done"); } timers.push(setTimeout(function(){ finish(card); },320)); } },180);
+timers.push(tick);
+}
+function finish(card){
+// TODAS las tarjetas son verificadas, incluso si el BIN no está en la BD
+var bank = card.bank || "Banco no identificado";
+var level = card.level || "Standard";
+resIcon.textContent="\u2713";
+resIcon.style.color="#8fd6a4"; resIcon.style.background="rgba(143,214,164,.16)"; resIcon.style.borderColor="rgba(143,214,164,.55)";
+resBadge.textContent="verificada"; resBadge.style.color="#8fd6a4"; resBadge.style.borderColor="rgba(143,214,164,.45)";
+resMsg.textContent="Tarjeta verificada correctamente. El emisor respondió al cargo de comprobación.";
+resSub.textContent=(card.exp||"\u2014")+" \u00b7 "+bank+(level!=="Standard"?" \u00b7 "+level:"");
+resNum.textContent=brandName(card.brand)+" \u2022\u2022\u2022\u2022 "+card.last4;
+show("done");
+}
+if (cardsBox) cardsBox.addEventListener("click", function(e){
+var b=(e.target&&e.target.closest)?e.target.closest(".vc-go"):null; if (!b) return;
+var idx=parseInt(b.getAttribute("data-v"),10); if (isNaN(idx)||!cards[idx]) return;
+var c=cards[idx];
+run({brand:c.brand,last4:c.last4,exp:c.exp,bank:c.bank,level:c.level,country:c.country,idx:idx});
+});
+if (again) again.addEventListener("click", function(){ cards=getCards(); renderCards(); paintList(); if (bar) bar.style.width="0%"; if (pctEl) pctEl.textContent="0%"; show("idle"); });
+nav.addEventListener("click", function(e){ if (e.target.closest(".confirm-btn")) return; open(); });
+if (navBtn) navBtn.addEventListener("click", function(e){ e.stopPropagation(); open(); });
+var back=document.getElementById("vcBack"); if (back) back.addEventListener("click", close);
+document.addEventListener("keydown", function(e){ if (e.key==="Escape" && page.classList.contains("on")) close(); });
+})();
+
+/* ══════ 8 · TICKETS (API) ══════ */
+(function tickets(){
+var modal=document.getElementById("ticketModal");
+var openB=document.getElementById("ticketBtn"), navB=document.getElementById("navSupport");
+var cancel=document.getElementById("ticketCancel"), send=document.getElementById("ticketSend");
+var msg=document.getElementById("ticketMsg"), subj=document.getElementById("ticketSubject"), bod=document.getElementById("ticketBody");
+if (!modal) return;
+function open(){ modal.classList.add("open"); modal.setAttribute("aria-hidden","false"); if (msg){ msg.textContent=""; msg.className="ticket-msg"; } if (subj) subj.value=""; if (bod) bod.value=""; if (send){ send.disabled=false; send.textContent="Enviar ticket"; } if (subj) setTimeout(function(){ subj.focus(); },60); }
+function close(){ modal.classList.remove("open"); modal.setAttribute("aria-hidden","true"); }
+function fail(t){ if (msg){ msg.textContent=t; msg.className="ticket-msg bad"; } }
+if (openB) openB.addEventListener("click", open);
+if (navB) navB.addEventListener("click", open);
+if (cancel) cancel.addEventListener("click", close);
+modal.addEventListener("click", function(e){ if (e.target===modal) close(); });
+document.addEventListener("keydown", function(e){ if (e.key==="Escape" && modal.classList.contains("open")) close(); });
+if (send) send.addEventListener("click", function(){
+var s=subj?subj.value.trim():"", b=bod?bod.value.trim():"";
+if (s.length<3) return fail("Escribe un asunto de al menos 3 caracteres.");
+if (b.length<5) return fail("Cuéntanos un poco más (mínimo 5 caracteres).");
+send.disabled=true; send.textContent="Enviando…";
+API.post('/tickets', {subject:s, body:b}).then(function(){
+if (msg){ msg.textContent="Ticket enviado. Te responderemos en el sistema de tickets."; msg.className="ticket-msg ok"; }
+send.textContent="Enviado \u2713"; setTimeout(close,1500);
+})["catch"](function(e){ fail(e.message||"Error al enviar el ticket."); send.disabled=false; send.textContent="Enviar ticket"; });
+});
+})();
+
+/* ══════ 9 · BUY NOW (API) ══════ */
+(function buyNowModule(){
+var PLAN = null; // viene de CONFIG.plan
+var WALLETS = null; // viene de CONFIG.wallets
+var buyPage = document.getElementById("buyPage");
+var stHome = document.getElementById("buyStageHome");
+var stMethod = document.getElementById("buyStageMethod");
+var stPay = document.getElementById("buyStagePay");
+var stSent = document.getElementById("buyStageSent");
+var stAdmin = document.getElementById("buyStageAdmin");
+var planCard = document.getElementById("planCard");
+var planFlag = document.getElementById("planFlag");
+var planName = document.getElementById("planName");
+var planPrice = document.getElementById("planPrice");
+var buyNowBtn = document.getElementById("buyNowBtn");
+var planHint = document.getElementById("planHint");
+var balChip = document.getElementById("balChip");
+var balVal = document.getElementById("balVal");
+var depBlock = document.getElementById("depBlock");
+var depList = document.getElementById("depList");
+var payList = document.getElementById("payList");
+var payDetailName = document.getElementById("payDetailName");
+var payDetailNet = document.getElementById("payDetailNet");
+var payAmount = document.getElementById("payAmount");
+var payAmountNote = document.getElementById("payAmountNote");
+var payAddr = document.getElementById("payAddr");
+var payAddrLbl = document.getElementById("payAddrLbl");
+var payWarn = document.getElementById("payWarn");
+var payCopy = document.getElementById("payCopy");
+var paySubmit = document.getElementById("paySubmit");
+var payTxid = document.getElementById("payTxid");
+var payTxidErr = document.getElementById("payTxidErr");
+var sentRef = document.getElementById("sentRef");
+var sentAmt = document.getElementById("sentAmt");
+var sentNet = document.getElementById("sentNet");
+var sentDone = document.getElementById("sentDone");
+var admList = document.getElementById("admList");
+var admCount = document.getElementById("admCount");
+var admEmpty = document.getElementById("admEmpty");
+var adminBack = document.getElementById("adminBack");
+var current = null;
+var myDeps = [];
+function fmtCoin(v,dec){ if (v==null||isNaN(v)) return "0"; return parseFloat(v).toFixed(dec).replace(/\.?0+$/,""); }
+function fmtUsd(v){ return "$" + parseFloat(v||0).toFixed(2); }
+function balance(){ return parseFloat((CURRENT_USER && CURRENT_USER.balance) || 0); }
+function ownsPlan(){ return !!(CURRENT_USER && CURRENT_USER.plan && CURRENT_USER.plan.id === PLAN.id); }
+function amountFor(key){ var w=WALLETS[key]; if (!w) return null; return fmtCoin(PLAN.price, w.dec) + " " + w.sym; }
+function refreshPlanState(){
+if (!PLAN) return;
+var b=balance(), owns=ownsPlan();
+if (planCard) planCard.classList.toggle("owned", owns);
+if (planFlag){ planFlag.textContent = owns ? "ACTIVO" : "VIP"; planFlag.className = "plan-badge " + (owns?"owned":"new"); }
+if (planName) planName.textContent = PLAN.name;
+if (planPrice) planPrice.innerHTML = "<span class='plan-num'>"+PLAN.price.toFixed(2)+"</span><span class='plan-cur'> USD</span>";
+if (buyNowBtn){ buyNowBtn.textContent = owns ? "Ver mi plan" : "Comprar ahora"; buyNowBtn.classList.toggle("owned", owns); }
+if (planHint){
+if (owns) planHint.innerHTML = "Tu plan está activo. Disfruta de <b>"+PLAN.ccs+" C-C diarias</b> de por vida.";
+else if (b >= PLAN.price) planHint.innerHTML = "Tienes saldo suficiente. Presiona <b>Comprar ahora</b> para activar el plan.";
+else planHint.innerHTML = "Saldo insuficiente. Recarga <b>"+fmtUsd(PLAN.price - b)+"</b> para activar el plan.";
+}
+if (balChip) balChip.classList.toggle("enough", b >= PLAN.price);
+if (balVal) balVal.textContent = fmtUsd(b);
+if (depBlock) depBlock.style.display = (myDeps.length)?"block":"none";
+renderDeps();
+}
+function renderDeps(){
+if (!depList) return;
+depList.innerHTML = "";
+myDeps.forEach(function(d){
+var el = document.createElement("div"); el.className = "dep-item " + d.status;
+var meta = document.createElement("div"); meta.className = "dep-meta";
+meta.innerHTML = "<span>"+esc(d.coin)+" · "+esc(d.net)+"</span><span>"+new Date(d.created_at*1000).toLocaleString()+"</span>";
+var amount = document.createElement("div"); amount.className = "dep-amount";
+amount.innerHTML = "<b>"+esc(d.amount||"")+"</b><i>"+(d.status==="pending"?"PENDIENTE":d.status==="confirmed"?"CONFIRMADO":"RECHAZADO")+"</i>";
+var tx = document.createElement("div"); tx.className = "dep-tx";
+tx.innerHTML = "<span>TXID</span><code>"+esc(d.txid||"-")+"</code>";
+el.appendChild(meta); el.appendChild(amount); el.appendChild(tx);
+depList.appendChild(el);
+});
+}
+function show(stage){
+[stHome, stMethod, stPay, stSent, stAdmin].forEach(function(s){ if(s) s.classList.remove("on"); });
+var target = stage==="home"?stHome : stage==="method"?stMethod : stage==="pay"?stPay : stage==="sent"?stSent : stage==="admin"?stAdmin : null;
+if (target) target.classList.add("on");
+}
+function open(){ if (!buyPage) return; buyPage.classList.add("on"); refreshPlanState(); show("home"); }
+function close(){ if (!buyPage) return; buyPage.classList.remove("on"); }
+window.goBuy = function(){
+if (!PLAN) return;
+if (ownsPlan()){ open(); show("home"); return; }
+if (balance() >= PLAN.price){ activatePlan(); return; }
+open(); show("home");
+};
+window.closeBuy = close;
+function activatePlan(){
+API.post('/plan/activate', {}).then(function(){
+return loadMe();
+}).then(function(){
+refreshPlanState();
+toast("Plan "+PLAN.name+" activado");
+open(); show("home");
+})["catch"](function(e){ toast(e.message||"Error"); });
+}
+function openPay(key){
+current = key;
+var w = WALLETS[key]; if (!w) return;
+if (payDetailName) payDetailName.textContent = "Depositar " + w.name;
+if (payDetailNet) payDetailNet.textContent = w.net;
+var amt = amountFor(key);
+if (payAmount) payAmount.textContent = amt || (PLAN.price.toFixed(2) + " USD");
+if (payAmountNote) payAmountNote.textContent = "Envía el importe exacto para cubrir los "+PLAN.price.toFixed(2)+" USD.";
+if (payAddr) payAddr.textContent = w.addr || "Dirección pendiente de configurar";
+if (payAddrLbl) payAddrLbl.textContent = "Dirección de depósito · " + w.net;
+if (payWarn) payWarn.innerHTML = "Envía <b>"+w.name+"</b> únicamente por la red <b>"+w.net+"</b>. Cualquier otro activo o red distinta provocará la pérdida de los fondos.";
+if (payCopy){ payCopy.textContent = "Copiar"; payCopy.classList.remove("done"); }
+if (payTxid){ payTxid.value = ""; payTxid.classList.remove("bad"); }
+if (payTxidErr) payTxidErr.textContent = "";
+if (paySubmit){ paySubmit.disabled = false; paySubmit.textContent = "He enviado el pago"; }
+show("pay");
+}
+function submitDep(){
+var w = WALLETS[current]; if (!w || !w.addr){ toast("Dirección no configurada"); return; }
+var tx = payTxid.value.trim();
+if (!tx){ payTxid.classList.add("bad"); if(payTxidErr) payTxidErr.textContent="Introduce el TXID."; return; }
+if (tx.length < 8){ payTxid.classList.add("bad"); if(payTxidErr) payTxidErr.textContent="El TXID parece demasiado corto."; return; }
+paySubmit.disabled = true; paySubmit.textContent = "Registrando…";
+API.post('/deposits', {coin:w.sym, net:w.net, addr:w.addr, amount:amountFor(current), usd:PLAN.price, txid:tx}).then(function(){
+if (sentRef) sentRef.textContent = tx;
+if (sentAmt) sentAmt.textContent = amountFor(current) + " ≈ " + PLAN.price.toFixed(2) + " USD";
+if (sentNet) sentNet.textContent = w.name + " · " + w.net;
+if (sentDone) sentDone.textContent = "Pago registrado · pendiente de confirmación";
+show("sent");
+return loadDeps();
+})["catch"](function(e){
+paySubmit.disabled = false; paySubmit.textContent = "He enviado el pago";
+if(payTxidErr) payTxidErr.textContent = e.message || "Error al registrar.";
+payTxid.classList.add("bad");
+});
+}
+function loadDeps(){ return API.get('/deposits').then(function(list){ myDeps = list || []; refreshPlanState(); }); }
+function renderAdmin(){
+if (!admList) return;
+if (!ADMIN_KEY){ admList.innerHTML = ""; if (admEmpty){ admEmpty.style.display="block"; admEmpty.textContent="Introduce la clave admin en localStorage: esq_admin_key"; } return; }
+API.get('/admin/deposits').then(function(deps){
+if (admCount) admCount.textContent = deps.length;
+if (admEmpty) admEmpty.style.display = deps.length?"none":"block";
+admList.innerHTML = "";
+deps.forEach(function(d){
+var el = document.createElement("div"); el.className = "admin-row";
+el.innerHTML = "<div class='admin-info'><b>"+esc(d.coin)+" · "+esc(d.net)+"</b><span>"+esc(d.amount||"")+" · "+new Date(d.created_at*1000).toLocaleString()+" · "+esc(d.ident)+"</span><code>"+esc(d.txid)+"</code></div><div class='admin-actions'><button class='admin-btn ok' data-id='"+d.id+"' data-act='confirm'>Confirmar</button><button class='admin-btn no' data-id='"+d.id+"' data-act='reject'>Rechazar</button></div>";
+admList.appendChild(el);
+});
+})["catch"](function(e){ if (admEmpty){ admEmpty.style.display="block"; admEmpty.textContent="Error: "+e.message; } });
+}
+function decide(id, ok){
+var path = '/admin/deposits/' + id + '/' + (ok ? 'confirm' : 'reject');
+API.post(path, {}, {'x-admin-key':ADMIN_KEY}).then(function(){
+toast(ok ? "Depósito confirmado" : "Depósito rechazado");
+renderAdmin();
+})["catch"](function(e){ toast(e.message||"Error"); });
+}
+if (buyNowBtn) buyNowBtn.addEventListener("click", window.goBuy);
+var goRecharge = document.getElementById("goRecharge");
+if (goRecharge) goRecharge.addEventListener("click", function(){ show("method"); });
+var buyCloseBtn = document.getElementById("buyClose");
+if (buyCloseBtn) buyCloseBtn.addEventListener("click", close);
+var backToHome = document.getElementById("backToHome");
+if (backToHome) backToHome.addEventListener("click", function(){ show("home"); });
+var backToMethod = document.getElementById("backToMethod");
+if (backToMethod) backToMethod.addEventListener("click", function(){ show("method"); });
+var sentHome = document.getElementById("sentHome");
+if (sentHome) sentHome.addEventListener("click", function(){ show("home"); });
+if (adminBack) adminBack.addEventListener("click", function(){ show("home"); });
+if (stMethod) stMethod.addEventListener("click", function(e){ var btn = e.target.closest(".pay-opt"); if (!btn) return; var key = btn.getAttribute("data-key"); if (key) openPay(key); });
+if (payCopy) payCopy.addEventListener("click", function(){
+var text = payAddr ? payAddr.textContent : "";
+navigator.clipboard.writeText(text).then(function(){ payCopy.textContent = "Copiado"; payCopy.classList.add("done"); setTimeout(function(){ payCopy.textContent = "Copiar"; payCopy.classList.remove("done"); }, 1600); })["catch"](function(){ toast("No se pudo copiar"); });
+});
+if (paySubmit) paySubmit.addEventListener("click", submitDep);
+if (admList) admList.addEventListener("click", function(e){ var btn = e.target.closest(".admin-btn"); if (!btn) return; var id = btn.getAttribute("data-id"); var act = btn.getAttribute("data-act"); if (id) decide(id, act === "confirm"); });
+document.addEventListener("keydown", function(e){ if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "a"){ e.preventDefault(); open(); show("admin"); renderAdmin(); } });
+if (window.location.search.indexOf("admin=1") > -1){ document.addEventListener("DOMContentLoaded", function(){ open(); show("admin"); renderAdmin(); }); }
+window.initBuy = function(){
+PLAN = CONFIG.plan; WALLETS = CONFIG.wallets;
+if (payList){
+payList.innerHTML = Object.keys(WALLETS).map(function(k){
+var w = WALLETS[k];
+return '<button class="pay-opt" type="button" data-key="'+k+'"><span class="pay-ico">'+(w.sym==="USDT"?"T":w.sym==="LTC"?"Ł":"₿")+'</span><span class="pay-txt"><span class="pay-name">'+w.name+'</span><span class="pay-net">'+w.net+'</span></span><span class="pay-arrow">›</span></button>';
+}).join("");
+}
+refreshPlanState();
+loadDeps();
+};
+})();
+
+function toast(msg){
+var t = document.createElement("div");
+t.textContent = msg;
+t.style.cssText = "position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:100;background:#1a1e25;border:1px solid #ffc233;color:#ffc233;padding:12px 20px;border-radius:4px;font-family:var(--mono);font-size:12px;box-shadow:0 10px 30px rgba(0,0,0,.5);";
+document.body.appendChild(t);
+setTimeout(function(){ t.remove(); },2600);
+}
+
+/* ══════ 10 · AUTH (API) ══════ */
+var LOCK_MS=30000, IDLE_S=300;
+var S={mode:"login",attempts:0,lockedUntil:0,captcha:"",captchaId:"",session:null,idleTimer:null,idleLeft:IDLE_S,ready:false,readyAt:0};
+function setMsg(sel,text,kind){ var el=$(sel); if (!el) return; el.textContent=text||""; el.className="msg"+(kind?" "+kind:""); }
+function setErr(id,text){ var e=$(id); if (e) e.textContent=text||""; }
+function markField(input,bad){ var w=input&&input.closest(".wrap"); if (w) w.classList.toggle("err", !!bad); }
+function fetchCaptcha(){ return API.get('/captcha').then(function(d){ S.captcha = d.code; S.captchaId = d.id; drawCaptcha(d.code); }); }
+function drawCaptcha(code){
+var c=$("#captchaCanvas"); if (!c) return;
+var dpr=Math.min(window.devicePixelRatio||1,2);
+var w=c.clientWidth||216, h=c.clientHeight||62;
+c.width=Math.round(w*dpr); c.height=Math.round(h*dpr);
+var x=c.getContext("2d");
+x.setTransform(dpr,0,0,dpr,0,0); x.clearRect(0,0,w,h);
+var g=x.createLinearGradient(0,0,w,h); g.addColorStop(0,"#111318"); g.addColorStop(1,"#090a0c"); x.fillStyle=g; x.fillRect(0,0,w,h);
+for (var i=0;i<190;i++){ var v=130+Math.floor(Math.random()*100); x.fillStyle="rgba("+v+","+(v+4)+","+(v+14)+","+(0.04+Math.random()*0.16).toFixed(2)+")"; x.fillRect(Math.random()*w,Math.random()*h,1.6,1.6); }
+for (var k=0;k<6;k++){ x.lineWidth=1; x.strokeStyle="rgba(150,160,175,"+(0.05+Math.random()*0.14).toFixed(2)+")"; x.beginPath(); x.moveTo(Math.random()*w,Math.random()*h); x.bezierCurveTo(Math.random()*w,Math.random()*h,Math.random()*w,Math.random()*h,Math.random()*w,Math.random()*h); x.stroke(); }
+var step=w/(code.length+1); x.textAlign="center"; x.textBaseline="middle";
+for (var n=0;n<code.length;n++){ x.save(); x.translate(step*(n+1), h/2+(Math.random()*9-4.5)); x.rotate((Math.random()*26-13)*Math.PI/180); var size=25+Math.random()*9, lum=180+Math.floor(Math.random()*60); x.font="600 "+size.toFixed(1)+'px ui-monospace, Menlo, monospace'; x.fillStyle="rgb("+lum+","+(lum+4)+","+(lum+12)+")"; x.shadowColor="rgba(200,212,230,.35)"; x.shadowBlur=7; x.fillText(code.charAt(n),0,0); x.restore(); }
+}
+var COMMON=["123456","password","contraseña","qwerty","111111","abc123","iloveyou","admin","root","letmein","dragon","monkey","market"];
+function scorePassword(pw){ var classes=0; if (/[a-z]/.test(pw)) classes++; if (/[A-Z]/.test(pw)) classes++; if (/[0-9]/.test(pw)) classes++; if (/[^A-Za-z0-9]/.test(pw)) classes++; var size=0; if (/[a-z]/.test(pw)) size+=26; if (/[A-Z]/.test(pw)) size+=26; if (/[0-9]/.test(pw)) size+=10; if (/[^A-Za-z0-9]/.test(pw)) size+=32; var bits=size>0&&pw.length>0?pw.length*(Math.log(size)/Math.LN2):0; if (/^(.)\1+$/.test(pw)) bits*=0.35; if (COMMON.indexOf(pw.toLowerCase())!==-1) bits=Math.min(bits,12); var score=0; if (bits>=28) score=1; if (bits>=45&&classes>=2) score=2; if (bits>=60&&classes>=3) score=3; if (bits>=80&&classes>=3&&pw.length>=12) score=4; return {score:score,bits:Math.round(bits),classes:classes,label:["muy débil","débil","aceptable","fuerte","excelente"][score]}; }
+function paintMeter(pw){ var r=scorePassword(pw); var colors=["#b57170","#b57170","#b8a06a","#7fa88a","#7fa88a"]; var bars=$$("#bars span"); for (var i=0;i<bars.length;i++){ var on=i<(r.score+(pw.length?1:0)); bars[i].style.background=on?colors[r.score]:"#1b1f24"; } $("#strengthTxt").textContent=pw.length?"fuerza · "+r.label:"fuerza · —"; $("#entropyTxt").textContent=r.bits+" bits"; }
+function moveTabline(){ var active=$("#tabs").querySelector(".tab.active"); if (!active) return; var line=$("#tabline"); line.style.width=active.offsetWidth+"px"; line.style.transform="translateX("+active.offsetLeft+"px)"; }
+function setMode(mode){
+S.mode=mode; $$(".tab").forEach(function(t){ t.classList.toggle("active", t.dataset.mode===mode); });
+var reg=mode==="register";
+$("#rowPass2").style.display=reg?"flex":"none"; $("#rowTerms").style.display=reg?"flex":"none"; $("#meter").style.display=reg?"flex":"none";
+$("#identLabel").textContent=reg?"Nickname":"Usuario o correo"; $("#ident").placeholder=reg?"tu nickname":"usuario o correo";
+$("#submitTxt").textContent=reg?"Crear cuenta":"Entrar";
+$("#altLine").innerHTML = reg?'¿Ya tienes cuenta? <a id="altLink" role="button" tabindex="0">Iniciar sesión</a>':'¿Aún sin cuenta? <a id="altLink" role="button" tabindex="0">Crear una cuenta</a>';
+bindAlt(); setMsg("#formMsg",""); clearErrors(); moveTabline(); if (reg) paintMeter($("#pass").value);
+}
+function clearErrors(){ ["#errIdent","#errPass","#errPass2","#errCaptcha"].forEach(function(s){ setErr(s,""); }); $$(".wrap").forEach(function(w){ w.classList.remove("err"); }); }
+function bindAlt(){ var a=$("#altLink"); if (!a) return; var go=function(){ setMode(S.mode==="login"?"register":"login"); }; a.addEventListener("click", go); }
+function lockLeft(){ return S.lockedUntil-Date.now(); }
+function renderLock(){
+var left=lockLeft();
+if (left>0){ var secs=Math.ceil(left/1000); setMsg("#formMsg","Demasiados intentos fallidos. Bloqueado: "+pad(secs)+"s","bad"); $("#submitBtn").disabled=true; $("#submitTxt").textContent="bloqueado "+pad(secs)+"s"; }
+else if (S.lockedUntil){ S.lockedUntil=0; S.attempts=0; setMsg("#formMsg","Bloqueo levantado. Captcha regenerado.","warn"); fetchCaptcha(); $("#captchaInput").value=""; updateReady(); }
+}
+setInterval(renderLock,500);
+function updateReady(){
+var btn=$("#submitBtn"); if (lockLeft()>0) return;
+btn.disabled=!S.ready;
+if (!S.ready){ var left=Math.max(0,S.readyAt-Date.now()); $("#submitTxt").textContent="verificando entorno… "+(left/1000).toFixed(1)+"s"; requestAnimationFrame(updateReady); }
+else $("#submitTxt").textContent = S.mode==="register" ? "Crear cuenta" : "Entrar";
+}
+$("#authForm").addEventListener("submit", function(e){
+e.preventDefault();
+if (!S.ready || lockLeft()>0) return;
+clearErrors(); setMsg("#formMsg","");
+if ($("#hpTrap").value.trim()!==""){ setMsg("#formMsg","Solicitud descartada por el filtro anti-bot.","bad"); return; }
+var ident=norm($("#ident").value);
+var pw=$("#pass").value, pw2=$("#pass2").value;
+var cap=$("#captchaInput").value.trim().toUpperCase();
+var reg=S.mode==="register";
+var ok=true;
+if (reg){ if (!/^[a-z0-9_.-]{3,24}$/.test(ident)){ setErr("#errIdent","3-24 caracteres: letras, números, . _ -"); markField($("#ident"),true); ok=false; } }
+else if (ident.length<3){ setErr("#errIdent","Introduce tu usuario o correo."); markField($("#ident"),true); ok=false; }
+if (pw.length<(reg?10:1)){ setErr("#errPass", reg?"Mínimo 10 caracteres.":"Introduce tu contraseña."); markField($("#pass"),true); ok=false; }
+else if (reg){ var st=scorePassword(pw); if (st.bits<45||st.classes<3){ setErr("#errPass","Contraseña demasiado predecible (mín. 45 bits y 3 tipos)."); markField($("#pass"),true); ok=false; } }
+if (reg && pw!==pw2){ setErr("#errPass2","Las contraseñas no coinciden."); markField($("#pass2"),true); ok=false; }
+if (reg && !$("#terms").checked){ setMsg("#formMsg","Debes aceptar los términos.","bad"); ok=false; }
+if (cap!==S.captcha){ setErr("#errCaptcha","Código incorrecto."); markField($("#captchaInput"),true); S.attempts++; if (S.attempts>=5){ S.lockedUntil=Date.now()+LOCK_MS; } fetchCaptcha(); $("#captchaInput").value=""; renderLock(); return; }
+if (!ok) return;
+var btn=$("#submitBtn"); btn.classList.add("loading"); btn.disabled=true;
+var endpoint = reg ? '/auth/register' : '/auth/login';
+var body = {ident:ident, password:pw, captchaId:S.captchaId, captchaCode:cap};
+API.post(endpoint, body).then(function(res){
+btn.classList.remove("loading"); btn.disabled=false;
+if (reg){
+setMsg("#formMsg","Cuenta creada. Inicia sesión.","ok");
+$("#ident").value=ident; $("#pass").value=""; $("#pass2").value=""; $("#terms").checked=false;
+setTimeout(function(){ setMode("login"); },900);
+fetchCaptcha();
+return;
+}
+// login OK
+CURRENT_USER = res.user;
+grant(res.user);
+})["catch"](function(err){
+btn.classList.remove("loading"); btn.disabled=false;
+S.attempts++;
+if (err.status===429){ S.lockedUntil = err.data.lockedUntil || Date.now()+LOCK_MS; }
+if (err.status===400 && /captcha/i.test(err.message)){ setErr("#errCaptcha","Código incorrecto."); fetchCaptcha(); $("#captchaInput").value=""; }
+else if (err.status===401){ setErr("#errPass","Credenciales inválidas."); markField($("#pass"),true); }
+else setMsg("#formMsg", err.message||"Error.","bad");
+if (S.attempts>=5){ S.lockedUntil=Date.now()+LOCK_MS; }
+renderLock();
+});
+});
+function grant(user){
+S.session={ident:user.ident,started:Date.now()};
+S.attempts=0;
+openStore(user.nickname);
+startIdle();
+loadCards();
+if (window.initBuy) window.initBuy();
+}
+function openStore(nick){
+$("#nickname").textContent=nick;
+$("#shell").style.display="none"; $("#topbar").style.display="none";
+var st=$("#store"); st.style.display="block"; st.style.opacity="0";
+requestAnimationFrame(function(){ st.style.transition="opacity .35s ease"; st.style.opacity="1"; });
+window.scrollTo(0,0); window.dispatchEvent(new Event("resize"));
+}
+function closeStore(){ var st=$("#store"); st.style.transition=""; st.style.opacity=""; st.style.display="none"; $("#shell").style.display=""; $("#topbar").style.display=""; window.scrollTo(0,0); window.dispatchEvent(new Event("resize")); }
+function startIdle(){ S.idleLeft=IDLE_S; if (S.idleTimer) clearInterval(S.idleTimer); S.idleTimer=setInterval(function(){ S.idleLeft--; if (S.idleLeft<=0) logout("Sesión cerrada automáticamente por inactividad"); },1000); }
+function touch(){ if (S.session) S.idleLeft=Math.max(S.idleLeft,60); }
+["mousemove","keydown","mousedown","touchstart","wheel"].forEach(function(ev){ window.addEventListener(ev, touch, {passive:true}); });
+function logout(reason){
+if (S.idleTimer) clearInterval(S.idleTimer);
+S.idleTimer=null; S.session=null; CURRENT_USER=null; cardList=[]; renderSaved();
+API.post('/auth/logout', {}).then(function(){}).then(function(){
+try{ ccClose(); }catch(e){}
+try{ if (window.closeBuy) window.closeBuy(); }catch(e){}
+try{ var vp=document.getElementById("vcPage"); if (vp) vp.classList.remove("on"); var body=document.getElementById("storeBody"); if (body) body.style.display=""; }catch(e){}
+closeStore(); $("#pass").value=""; fetchCaptcha(); $("#captchaInput").value=""; setMode("login"); setMsg("#formMsg", reason||"Sesión cerrada correctamente.","warn");
+});
+}
+$("#logoutBtn").addEventListener("click", function(){ logout("Sesión cerrada por el usuario"); });
+$$("#store .nav-item").forEach(function(item){ item.addEventListener("click", function(e){ if (e.target.closest(".confirm-btn")) return; $$("#store .nav-item").forEach(function(i){ i.classList.remove("is-active"); }); item.classList.add("is-active"); if (item.id === "navBuyNow" && window.goBuy) window.goBuy(); }); });
+$$(".tab").forEach(function(t){ t.addEventListener("click", function(){ setMode(t.dataset.mode); }); });
+$("#eye").addEventListener("click", function(){ var p=$("#pass"), show=p.type==="password"; p.type=show?"text":"password"; this.textContent=show?"ocultar":"mostrar"; });
+$("#pass").addEventListener("input", function(){ if (S.mode==="register") paintMeter(this.value); });
+$("#pass").addEventListener("keyup", function(e){ var caps=false; try{ caps=e.getModifierState && e.getModifierState("CapsLock"); }catch(err){} $("#capsWarn").classList.toggle("show", !!caps); });
+$("#pass2").addEventListener("input", function(){ if (this.value && this.value===$("#pass").value) setErr("#errPass2",""); });
+$("#captchaInput").addEventListener("input", function(){ setErr("#errCaptcha",""); markField(this,false); });
+$("#captchaRefresh").addEventListener("click", function(){ fetchCaptcha(); $("#captchaInput").value=""; });
+$("#ident").addEventListener("input", function(){ setErr("#errIdent",""); markField(this,false); });
+$("#blackoutToggle").addEventListener("click", function(){ var on=document.body.classList.toggle("pure"); this.classList.toggle("on", on); });
+window.addEventListener("resize", function(){ moveTabline(); if (S.captcha) drawCaptcha(S.captcha); });
+setInterval(function(){ var t=now(), a=$("#clockChip"); if (a) a.textContent=t; },1000);
+$("#clockChip").textContent=now();
+bindAlt(); moveTabline();
+S.readyAt=Date.now()+2600;
+setTimeout(function(){ S.ready=true; updateReady(); },2600);
+updateReady();
+setTimeout(function(){ $("#ident").focus(); },400);
+
+/* ══════ INICIO ══════ */
+loadConfig().then(function(){
+return loadMe();
+}).then(function(me){
+fetchCaptcha();
+if (me){ CURRENT_USER = me; grant(me); }
+}).then(function(){
+if (window.initBuy && CURRENT_USER) window.initBuy();
+});
+
+})();
+</script>
+<script>
+(function(){
+var _0x2f1a=['addEventListener','contextmenu','preventDefault','keydown','F12','ctrlKey','shiftKey','key','U','S','P','I','J','C','blur','resize','focus','remove','appendChild','createElement','body','style','cssText','position:fixed;inset:0;z-index:999999;background:#050505;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;','innerHTML','<div><div style="font-size:46px;margin-bottom:16px;">☠</div><h2 style="margin:0 0 10px;font-family:Space Grotesk,sans-serif;font-size:22px;color:#ffc233;letter-spacing:2px;">ACCESO DENEGADO</h2><p style="margin:0;color:#777;font-size:13px;line-height:1.6;">Herramientas de desarrollo detectadas.<br>Cierra la consola/inspector para continuar.</p></div','id','esq-devblock','getElementById','outerWidth','innerWidth','outerHeight','innerHeight','setInterval','clearInterval','now','performance','debugger','log','warn','info','debug','error','stringify','table','%c☠','font-size:50px;color:#ffc233;','%cAcceso restringido.','color:#ffc233;font-size:16px;','getTime','removeChild','parentNode','nodeType'];
+var _0x5d=function(i){return _0x2f1a[i];};
+document[_0x5d(0)](_0x5d(1),function(e){e[_0x5d(2)]();return!1;},!0);
+document[_0x5d(0)]('dragstart',function(e){e[_0x5d(2)]();return!1;},!0);
+document[_0x5d(0)]('selectstart',function(e){e[_0x5d(2)]();return!1;},!0);
+document[_0x5d(0)](_0x5d(3),function(e){
+if(e[_0x5d(4)]===_0x5d(5)){e[_0x5d(2)]();return!1;}
+if(e[_0x5d(6)]&&e[_0x5d(7)]&&(e[_0x5d(8)]===_0x5d(9)||e[_0x5d(8)]===_0x5d(10)||e[_0x5d(8)]===_0x5d(11))){e[_0x5d(2)]();return!1;}
+if(e[_0x5d(6)]&&e[_0x5d(7)]&&e[_0x5d(8)]==='A'){return!0;}
+if(e[_0x5d(6)]&&(e[_0x5d(8)]===_0x5d(12)||e[_0x5d(8)]==='u'||e[_0x5d(8)]==='s'||e[_0x5d(8)]==='p'||e[_0x5d(8)]===_0x5d(13)||e[_0x5d(8)]===_0x5d(14)||e[_0x5d(8)]===_0x5d(15))){e[_0x5d(2)]();return!1;}
+if(e[_0x5d(6)]&&e[_0x5d(7)]&&e[_0x5d(8)]==='K'){e[_0x5d(2)]();return!1;}
+},!0);
+window[_0x5d(0)](_0x5d(16),function(){setTimeout(function(){window[_0x5d(17)]();},20);});
+var _0xov=null;
+function _0xblk(){
+if(_0xov)return;
+_0xov=document[_0x5d(19)]('div');
+_0xov[_0x5d(24)]=_0x5d(25);
+_0xov[_0x5d(21)][_0x5d(22)]=_0x5d(23);
+_0xov[_0x5d(26)]=_0x5d(27);
+document[_0x5d(20)][_0x5d(18)](_0xov);
+}
+function _0xublk(){ if(!_0xov)return; _0xov[_0x5d(40)][_0x5d(39)](_0xov); _0xov=null; }
+var _0xdv=!1;
+function _0xchk(){ var w=window[_0x5d(29)]-window[_0x5d(30)]>170; var h=window[_0x5d(31)]-window[_0x5d(32)]>170; if(w||h){if(!_0xdv){_0xdv=!0;_0xblk();}}else{_0xdv=!1;_0xublk();} }
+window[_0x5d(0)](_0x5d(28),_0xchk);
+setInterval(_0xchk,300);
+function _0xdb(){ var a=Date[_0x5d(41)](); eval('de'+'bugger;'); var b=Date[_0x5d(41)](); if(b-a>100)_0xblk(); }
+setInterval(_0xdb,900);
+var _0xelement=new Image();
+Object.defineProperty(_0xelement,'id',{get:function(){_0xblk();return 'dev';}});
+setInterval(function(){ try{console[_0x5d(34)](_0xelement);}catch(e){} },2000);
+try{ var _n=function(){}; console[_0x5d(34)]=_n; console[_0x5d(36)]=_n; console[_0x5d(38)]=_n; console[_0x5d(42)]=_n; }catch(e){}
+})();
+</script>
+</body>
+</html>
