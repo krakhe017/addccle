@@ -1,15 +1,12 @@
 {
   "name": "esq-bypass",
   "version": "2.1.0",
-  "description": "ESQ BYPASS - Backend seguro con Render",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js"
   },
-  "engines": {
-    "node": ">=18.0.0"
-  },
+  "engines": { "node": ">=18.0.0" },
   "dependencies": {
     "express": "^4.19.2",
     "better-sqlite3": "^11.3.0",
