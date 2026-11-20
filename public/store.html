@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ESQ BYPASS · Store</title>
+<link rel="icon" type="image/png" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1NGQnmst_4PAq4CGgcO1cmfDCazasn4AX3njcmOOykqSPAWEWfuRngVm0&s=10">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/css/auth.css">
+<link rel="stylesheet" href="/css/store.css">
+<link rel="stylesheet" href="/css/addcc.css">
+<link rel="stylesheet" href="/css/vc.css">
+<link rel="stylesheet" href="/css/buy.css">
+<link rel="stylesheet" href="/css/tickets.css">
+</head>
+<body>
+<div class="bg"></div>
+<canvas class="money-canvas" id="moneyCanvas" aria-hidden="true"></canvas>
+<svg class="grain" aria-hidden="true">
+  <filter id="grainF"><feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  <rect width="100%" height="100%" filter="url(#grainF)"/>
+</svg>
+<div class="scanlines" aria-hidden="true"></div>
+
+<div id="store" class="on">
+  <div class="page">
+    <header class="header">
+      <p class="store-name"><span id="storeType"></span><span class="store-caret" aria-hidden="true"></span></p>
+      <div class="head-icons">
+        <button class="logout" id="logoutBtn" type="button">Salir</button>
+      </div>
+    </header>
+
+    <div class="body" id="storeBody">
+      <nav class="sidebar">
+        <div class="profile">
+          <div class="avatar" role="img" aria-label="Máscara Anonymous">
+            <img src="https://russianmarketcc.net/images/user.png" alt="Máscara Anonymous" width="60" height="60" decoding="auto">
+          </div>
+          <div class="user-info"><p class="user-title">Mi cuenta</p><p class="user-name" id="nickname">—</p></div>
+        </div>
+        <div class="nav-item" title="ADD CC" id="navAddCC"><svg class="icon" role="presentation" aria-hidden="true"><use href="#i-products"></use></svg><p class="nav-label">ADD C-C</p></div>
+        <div class="nav-item has-action" title="C-VC" id="navVerify">
+          <svg class="icon" role="presentation" aria-hidden="true"><use href="#i-crown"></use></svg>
+          <p class="nav-label">C-VC</p>
+          <button class="confirm-btn" type="button" id="navVerifyBtn">Confirm</button>
+        </div>
+        <div class="nav-item" title="Buy Now" id="navBuyNow"><svg class="icon" role="presentation" aria-hidden="true"><use href="#i-bag"></use></svg><p class="nav-label">Buy Now</p></div>
+        <div class="nav-item" title="Support" id="navSupport"><svg class="icon" role="presentation" aria-hidden="true"><use href="#i-support"></use></svg><p class="nav-label">Support</p></div>
+        <a class="nav-item" title="Tutorial" id="navTutorial" href="https://esqbypasstutorial.lat/" target="_blank" rel="noopener noreferrer"><svg class="icon" role="presentation" aria-hidden="true"><use href="#i-telegram"></use></svg><p class="nav-label">Tutorial</p></a>
+        <button class="cta" type="button" title="The Best Bypass">
+          <svg class="icon" role="presentation" aria-hidden="true"><use href="#i-bag"></use></svg>
+          <p class="cta-label">The Best Bypass</p>
+        </button>
+      </nav>
+
+      <main class="main">
+        <div class="hero-row">
+          <aside class="stat-card">
+            <span class="stat-live"><span class="dot pulse"></span>live</span>
+            <span class="stat-num">86</span>
+            <span class="stat-lbl">compradores actuales</span>
+          </aside>
+          <img class="hero-logo" src="https://ae-pic-a1.aliexpress-media.com/kf/S3ee25b334b5e41ae86b33a8841bb9acaW.jpg_480x480q75.jpg_.webp" alt="ESQ BYPASS" decoding="async">
+          <aside class="support-card">
+            <p class="support-title">Support</p>
+            <p class="support-note">¿Necesitas ayuda? Abre un ticket y te respondemos.</p>
+            <button class="ticket-btn" id="ticketBtn" type="button">Create ticket</button>
+          </aside>
+        </div>
+
+        <section class="news">
+          <h2 class="news-title">News and updates</h2>
+          <div class="news-grid">
+            <article class="card">
+              <span class="card-tag">Attention</span>
+              <h3 class="card-title">Please bookmark or save all links to always have access!</h3>
+              <ul class="card-lines"><li>WEB: https://esqbypasstutorial.lat/</li><li>WEB: https://esquelebypassnew.store/</li><li>WEB: https://esquelebypass.rip/</li><li>WEB: https://esquelebypassnew.store/</li><li>WEB: https://esquelebypass.rip/</li></ul>
+            </article>
+            <article class="card">
+              <span class="card-tag">Telegram</span>
+              <p class="card-body">
+                <span class="blue">Important notice</span>:
+                Our online store does not have a Telegram channel nor do we have any contacts on
+                <span class="red">Telegram</span>.
+                Please be aware that any channels claiming to be affiliated with us are fraudulent.
+                We would like to emphasize that the <span class="red">ONLY</span> way to communicate with us
+                is through this website's ticket system. Thank you for your understanding and cooperation.
+              </p>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- ══════ ADD C-C ══════ -->
+    <section class="ccpage" id="ccPage">
+      <div class="cc-top">
+        <button class="cc-back" id="ccBack" type="button">&#8592; Volver</button>
+        <span class="cc-crumb">Add C-C</span>
+      </div>
+
+      <div class="cc-wrap">
+        <div class="cc-head">
+          <h2>Añadir tarjeta</h2>
+          <p>Se vinculará a la cuenta <strong id="ccIdent">—</strong></p>
+        </div>
+
+        <div class="cc-steps" id="ccSteps">
+          <i data-s="1" class="on">Token</i><b></b>
+          <i data-s="2">Sesión</i><b></b>
+          <i data-s="3">Tarjeta</i>
+        </div>
+
+        <div class="cc-pane on" id="ccPane1">
+          <p class="cc-note">Elige cómo quieres identificarte para vincular la tarjeta.</p>
+          <div class="cc-modes" id="ccModes">
+            <button type="button" class="cc-mode on" data-m="token">Solo token</button>
+            <button type="button" class="cc-mode" data-m="mail">Correo + token</button>
+          </div>
+          <div class="cc-field cc-only-mail" id="ccMailRow">
+            <label for="ccName">Tu correo</label>
+            <input id="ccName" type="text" inputmode="email" spellcheck="false" autocapitalize="off" autocomplete="email" placeholder="tucorreo@ejemplo.com">
+          </div>
+          <div class="cc-field">
+            <label for="ccToken">Token de acceso</label>
+            <textarea id="ccToken" rows="3" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="Pega aquí tu token"></textarea>
+          </div>
+          <p class="cc-token-note" id="ccTokenNote">El token de acceso de 153 caracteres que te entregó el proveedor.</p>
+          <p class="cc-token-hint" id="ccTokenHint">0 / 153 caracteres</p>
+          <p class="cc-err" id="ccErr1"></p>
+          <button class="cc-btn" id="ccNext" type="button">Continuar con token</button>
+        </div>
+
+        <div class="cc-pane" id="ccPane2">
+          <div class="cc-ident">
+            <div class="cc-ident-logo"><img src="https://i.pinimg.com/736x/78/dd/25/78dd25d894ce47359807d3b770306d61.jpg" alt="ESQ BYPASS" decoding="async"></div>
+            <div class="cc-ident-txt">
+              <span class="cc-ident-id" id="ccIdentMask">—</span>
+              <span class="cc-ident-sub">Vinculando a esta cuenta</span>
+            </div>
+          </div>
+          <div class="cc-spin"></div>
+          <p class="cc-center" id="ccVerifyTxt">Estableciendo sesión segura…</p>
+          <div class="cc-prog on" id="ccProg2">
+            <div class="cc-bar"><span id="ccBar2"></span></div>
+            <div class="cc-step-txt"><span id="ccStepName2">Negociando TLS 1.3…</span><b id="ccPct2">0%</b></div>
+          </div>
+        </div>
+
+        <div class="cc-pane" id="ccPane3">
+          <div class="cc-preview" id="ccPreview">
+            <div class="cc-chip"></div>
+            <div class="cc-pv-num" id="ccPvNum">•••• •••• •••• ••••</div>
+            <div class="cc-pv-row">
+              <div><div class="cc-pv-lbl">Titular</div><div class="cc-pv-val" id="ccPvHolder">—</div></div>
+              <div><div class="cc-pv-lbl">Vence</div><div class="cc-pv-val" id="ccPvExp">MM/YY</div></div>
+              <div class="cc-pv-brand" id="ccPvBrand"></div>
+            </div>
+          </div>
+
+          <div class="cc-info">
+            <div class="cc-info-item"><span class="cc-info-lbl">Banco emisor</span><span class="cc-info-val dim" id="ccBank">—</span></div>
+            <div class="cc-info-item"><span class="cc-info-lbl">Nivel</span><span class="cc-info-val dim" id="ccLevel">—</span></div>
+            <div class="cc-info-item"><span class="cc-info-lbl">País</span><span class="cc-info-val dim" id="ccCountry">—</span></div>
+          </div>
+
+          <div class="cc-field">
+            <label for="ccNum">Número de tarjeta</label>
+            <input id="ccNum" type="text" inputmode="numeric" autocomplete="off" placeholder="4242 4242 4242 4242" maxlength="19">
+          </div>
+          <div class="cc-row">
+            <div class="cc-field"><label for="ccExp">Fecha</label><input id="ccExp" type="text" inputmode="numeric" autocomplete="off" placeholder="MM/YY" maxlength="5"></div>
+            <div class="cc-field"><label for="ccCvc">CVC</label><input id="ccCvc" type="text" inputmode="numeric" autocomplete="off" placeholder="123" maxlength="4"></div>
+          </div>
+          <p class="cc-err" id="ccErr"></p>
+          <button class="cc-btn" id="ccAdd" type="button">Añadir tarjeta</button>
+
+          <div class="cc-prog" id="ccProg">
+            <div class="cc-bar"><span id="ccBar"></span></div>
+            <div class="cc-step-txt"><span id="ccStepName">Conectando…</span><b id="ccPct">0%</b></div>
+            <ul class="cc-list" id="ccList">
+              <li><em>&#10003;</em>Conectando con la pasarela</li>
+              <li><em>&#10003;</em>Validando los datos</li>
+              <li><em>&#10003;</em>Autorizando el cargo</li>
+              <li><em>&#10003;</em>Confirmando la vinculación</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="cc-pane" id="ccPane4">
+          <div class="cc-ok">&#10003;</div>
+          <p class="cc-center"><strong style="color:#eef2f6">Tarjeta vinculada</strong><br>Ya puedes usarla en tus compras.</p>
+          <button class="cc-btn" id="ccDone" type="button">Hecho</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════ VERIFY CARD ══════ -->
+    <section class="vcpage" id="vcPage">
+      <div class="cc-top">
+        <button class="cc-back" id="vcBack" type="button">&#8592; Volver</button>
+        <span class="cc-crumb">CVC</span>
+      </div>
+
+      <div class="vc-wrap">
+        <div class="cc-head">
+          <h2>Verificar tarjeta</h2>
+          <p>Comprobación del estado de las tarjetas vinculadas a <strong id="vcIdent">—</strong></p>
+        </div>
+
+        <div class="vc-stage on" id="vcStageIdle">
+          <div id="vcCards"></div>
+          <p class="vc-empty" id="vcEmpty" style="display:none">
+            Todavía no has vinculado ninguna tarjeta.<br>
+            Ve a <strong style="color:#ffc233">ADD C-C</strong> para añadir una.
+          </p>
+        </div>
+
+        <div class="vc-stage" id="vcStageRun">
+          <div class="cc-spin"></div>
+          <p class="cc-center" id="vcRunTxt">Comprobando la tarjeta…</p>
+          <div class="cc-prog on">
+            <div class="cc-bar"><span id="vcBar"></span></div>
+            <div class="cc-step-txt"><span id="vcStepName">Conectando…</span><b id="vcPct">0%</b></div>
+            <ul class="cc-list" id="vcList">
+              <li><em>&#10003;</em>Localizando la tarjeta</li>
+              <li><em>&#10003;</em>Solicitando el cargo de verificación</li>
+              <li><em>&#10003;</em>Esperando la respuesta del emisor</li>
+              <li><em>&#10003;</em>Registrando el resultado</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="vc-stage" id="vcStageDone">
+          <div class="vc-row" id="vcResultRow">
+            <span class="vc-check" id="vcResultIcon">&#10003;</span>
+            <span class="vc-body">
+              <span class="vc-num" id="vcResultNum">••••</span>
+              <span class="vc-sub" id="vcResultSub">—</span>
+            </span>
+            <span class="vc-badge" id="vcResultBadge">verificada</span>
+          </div>
+          <p class="cc-center" id="vcResultMsg">Tarjeta verificada correctamente.</p>
+          <button class="cc-btn" id="vcAgain" type="button">Verificar otra</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ══════ BUY NOW ══════ -->
+  <div class="buypage" id="buyPage">
+    <div class="buy-frame">
+      <button class="buy-close" id="buyClose" type="button" aria-label="Cerrar">×</button>
+
+      <div class="buy-stage on" id="buyStageHome">
+        <div class="buy-wrap">
+          <div class="buy-head">
+            <h2>Acceso Lifetime</h2>
+            <p>Activa tu plan de por vida</p>
+          </div>
+          <article class="plan-card" id="planCard">
+            <span class="plan-badge" id="planFlag">VIP</span>
+            <div class="plan-name" id="planName">Esquele Lifetime</div>
+            <div class="plan-sub">Sin renovaciones · 25 C-C diarias</div>
+            <div class="plan-price" id="planPrice"><span class="plan-num">34.99</span><span class="plan-cur"> USD</span></div>
+            <ul class="plan-feats">
+              <li><em>&#10003;</em><span><b>25 C-C</b> cada día</span></li>
+              <li><em>&#10003;</em><span>Acceso <b>de por vida</b></span></li>
+              <li><em>&#10003;</em><span>Sin renovaciones ni cuotas mensuales</span></li>
+              <li><em>&#10003;</em><span>Soporte prioritario</span></li>
+              <li><em>&#10003;</em><span>Actualizaciones ilimitadas</span></li>
+            </ul>
+            <button class="buy-btn" id="buyNowBtn" type="button">Comprar ahora</button>
+            <p class="plan-hint" id="planHint">Saldo insuficiente. Recarga <b>$34.99</b> para activar el plan.</p>
+          </article>
+          <div class="bal-card" id="balChip">
+            <div>
+              <div class="bal-val" id="balVal">$0.00</div>
+              <div class="bal-lbl">Saldo disponible</div>
+            </div>
+            <button class="mini-recharge" id="goRecharge" type="button">Recargar</button>
+          </div>
+          <div class="dep-block" id="depBlock" style="display:none">
+            <div class="dep-title">Depósitos registrados</div>
+            <div class="dep-list" id="depList"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="buy-stage" id="buyStageMethod">
+        <div class="buy-wrap">
+          <div class="buy-head">
+            <h2>Método de pago</h2>
+            <p>Selecciona una red para recargar saldo</p>
+          </div>
+          <div class="pay-list">
+            <button class="pay-opt" type="button" data-key="usdt_bep20">
+              <span class="pay-ico">T</span>
+              <span class="pay-txt"><span class="pay-name">USDT</span><span class="pay-net">BEP20 (BSC)</span></span>
+              <span class="pay-arrow">›</span>
+            </button>
+            <button class="pay-opt" type="button" data-key="usdt_trc20">
+              <span class="pay-ico">T</span>
+              <span class="pay-txt"><span class="pay-name">USDT</span><span class="pay-net">TRC20 (TRON)</span></span>
+              <span class="pay-arrow">›</span>
+            </button>
+            <button class="pay-opt" type="button" data-key="ltc">
+              <span class="pay-ico">Ł</span>
+              <span class="pay-txt"><span class="pay-name">Litecoin</span><span class="pay-net">Red LTC</span></span>
+              <span class="pay-arrow">›</span>
+            </button>
+            <button class="pay-opt" type="button" data-key="btc">
+              <span class="pay-ico">₿</span>
+              <span class="pay-txt"><span class="pay-name">Bitcoin</span><span class="pay-net">Red BTC</span></span>
+              <span class="pay-arrow">›</span>
+            </button>
+          </div>
+          <button class="buy-back" id="backToHome" type="button">← Volver</button>
+        </div>
+      </div>
+
+      <div class="buy-stage" id="buyStagePay">
+        <div class="buy-wrap">
+          <div class="buy-head">
+            <h2 id="payDetailName">Depositar USDT</h2>
+            <p id="payDetailNet">BEP20 (BSC)</p>
+          </div>
+          <div class="pay-amount">
+            <span class="pay-amount-lbl">Importe a enviar</span>
+            <span class="pay-amount-val" id="payAmount">34.99 USD</span>
+            <span class="pay-amount-note" id="payAmountNote"></span>
+          </div>
+          <div class="buy-field">
+            <label id="payAddrLbl">Dirección de depósito</label>
+            <div class="pay-addr">
+              <span class="pay-addr-val" id="payAddr">Dirección pendiente de configurar</span>
+              <button class="pay-copy" id="payCopy" type="button">Copiar</button>
+            </div>
+          </div>
+          <div class="buy-field">
+            <label for="payTxid">TXID / Hash de la transacción</label>
+            <input id="payTxid" type="text" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="Pega aquí el TXID">
+            <div class="field-err" id="payTxidErr"></div>
+          </div>
+          <p class="pay-warn" id="payWarn"></p>
+          <button class="buy-action" id="paySubmit" type="button">He enviado el pago</button>
+          <button class="buy-back" id="backToMethod" type="button">← Volver</button>
+        </div>
+      </div>
+
+      <div class="buy-stage" id="buyStageSent">
+        <div class="buy-wrap">
+          <div class="buy-head">
+            <h2>Pago registrado</h2>
+            <p>Estamos revisando tu transacción</p>
+          </div>
+          <div class="sent-box">
+            <div class="sent-icon">⏳</div>
+            <p class="sent-status" id="sentDone">Pago registrado · pendiente de confirmación</p>
+            <p class="sent-detail"><span id="sentAmt">34.99 USD</span> · <span id="sentNet">USDT · BEP20</span></p>
+            <div class="sent-tx">
+              <span>TXID</span>
+              <code id="sentRef">-</code>
+            </div>
+          </div>
+          <button class="buy-action" id="sentHome" type="button">Volver al inicio</button>
+        </div>
+      </div>
+
+      <div class="buy-stage" id="buyStageAdmin">
+        <div class="buy-wrap">
+          <div class="buy-head">
+            <h2>Panel de depósitos</h2>
+            <p><span id="admCount">0</span> pendientes</p>
+          </div>
+          <div class="admin-empty" id="admEmpty">No hay depósitos pendientes.</div>
+          <div class="admin-list" id="admList"></div>
+          <button class="buy-back" id="adminBack" type="button">← Volver</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="ticket-modal" id="ticketModal" aria-hidden="true">
+  <div class="ticket-box" role="dialog" aria-modal="true" aria-label="Crear ticket">
+    <h3>Create ticket</h3>
+    <label class="ticket-field"><span>Asunto</span><input id="ticketSubject" type="text" placeholder="Resumen del problema"></label>
+    <label class="ticket-field"><span>Mensaje</span><textarea id="ticketBody" rows="4" placeholder="Describe tu caso con detalle..."></textarea></label>
+    <div class="ticket-actions">
+      <button class="ticket-cancel" id="ticketCancel" type="button">Cancelar</button>
+      <button class="ticket-send" id="ticketSend" type="button">Enviar ticket</button>
+    </div>
+    <p class="ticket-msg" id="ticketMsg"></p>
+  </div>
+</div>
+
+<svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+  <symbol id="i-box" viewBox="0 0 24 24">
+    <path d="M 18 0 L 9 8.25 L 0 0 Z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5" transform="translate(3 5.25)"/>
+    <path d="M 0 0 L 18 0 L 18 12.75 C 18 13.164 17.664 13.5 17.25 13.5 L 0.75 13.5 C 0.336 13.5 0 13.164 0 12.75 Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(3 5.25)"/>
+    <path d="M 7.133 0 L 0 6.538" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(3.232 12)"/>
+    <path d="M 7.133 6.538 L 0 0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(13.636 12)"/>
+  </symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24">
+    <rect x="2" y="5" width="20" height="14" rx="1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M2 7l10 7 10-7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-telegram" viewBox="0 0 24 24">
+    <path d="M2 12l20-9-9 20-2-8-9-3z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24">
+    <path d="M 1.495 6.75 C 1.495 3.022 4.518 0 8.245 0 C 11.973 0 14.995 3.022 14.995 6.75 C 14.995 10.108 15.774 12.806 16.392 13.875 C 16.526 14.107 16.526 14.392 16.393 14.624 C 16.26 14.856 16.013 14.999 15.745 15 L 0.745 15 C 0.478 14.998 0.232 14.855 0.099 14.623 C -0.034 14.391 -0.033 14.106 0.1 13.875 C 0.718 12.806 1.495 10.107 1.495 6.75 Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(3.755 3)"/>
+    <path d="M 0 0 C 0 1.657 1.343 3 3 3 C 4.657 3 6 1.657 6 0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(9 18)"/>
+  </symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24">
+    <path d="M 0.75 12.75 C 0.336 12.75 0 12.414 0 12 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 17.25 0 C 17.664 0 18 0.336 18 0.75 L 18 12 C 18 12.414 17.664 12.75 17.25 12.75 Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(3 6.75)"/>
+    <path d="M 0 6.75 L 0 3.75 C 0 1.679 1.679 0 3.75 0 C 5.821 0 7.5 1.679 7.5 3.75 L 7.5 6.75" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(8.25 2.25)"/>
+  </symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24">
+    <path d="M 0 9 C 0 4.029 4.029 0 9 0 C 13.971 0 18 4.029 18 9 C 18 13.971 13.971 18 9 18 C 4.029 18 0 13.971 0 9 Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(3 3)"/>
+    <path d="M 7.5 9 C 7.5 15 3.75 18 3.75 18 C 3.75 18 0 15 0 9 C 0 3 3.75 0 3.75 0 C 3.75 0 7.5 3 7.5 9 Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(8.25 3)"/>
+    <path d="M 0 0 L 16.976 0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(3.512 9)"/>
+    <path d="M 0 0 L 16.976 0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(3.512 15)"/>
+  </symbol>
+  <symbol id="i-products" viewBox="0 0 24 24">
+    <path d="M 0 0 L 19.5 0 L 19.5 9 C 19.5 9.414 19.164 9.75 18.75 9.75 L 0.75 9.75 C 0.336 9.75 0 9.414 0 9 Z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5" transform="translate(2.25 9)"/>
+    <path d="M 0.75 13.5 C 0.336 13.5 0 13.164 0 12.75 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 18.75 0 C 19.164 0 19.5 0.336 19.5 0.75 L 19.5 12.75 C 19.5 13.164 19.164 13.5 18.75 13.5 Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(2.25 5.25)"/>
+    <path d="M 0 0 L 3 0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(15.75 15.75)"/>
+    <path d="M 0 0 L 1.5 0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(11.25 15.75)"/>
+    <path d="M 0 0 L 19.5 0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(2.25 9)"/>
+  </symbol>
+  <symbol id="i-crown" viewBox="0 0 24 24">
+    <path d="M 0 6.749 L 4.677 0.308 C 4.815 0.119 5.032 0.006 5.266 0 C 5.499 -0.005 5.722 0.099 5.868 0.281 L 7.081 1.687 C 7.366 2.041 7.796 2.247 8.25 2.247 C 8.704 2.247 9.134 2.041 9.419 1.687 L 10.632 0.281 C 10.778 0.099 11.001 -0.005 11.234 0 C 11.468 0.006 11.685 0.119 11.823 0.308 L 16.5 6.749" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(3.75 4.501)"/>
+    <path d="M 0 0 L 22.5 0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(0.75 11.25)"/>
+    <path d="M 0 2.625 C 0 1.175 1.175 0 2.625 0 C 4.075 0 5.25 1.175 5.25 2.625 C 5.25 4.075 4.075 5.25 2.625 5.25 C 1.175 5.25 0 4.075 0 2.625 Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(4.5 14.25)"/>
+    <path d="M 0 2.625 C 0 1.175 1.175 0 2.625 0 C 4.075 0 5.25 1.175 5.25 2.625 C 5.25 4.075 4.075 5.25 2.625 5.25 C 1.175 5.25 0 4.075 0 2.625 Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(14.25 14.25)"/>
+    <path d="M 0 0 L 4.552 0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(9.724 17.25)"/>
+  </symbol>
+  <symbol id="i-check" viewBox="0 0 24 24">
+    <path d="M 0.75 16.5 C 0.336 16.5 0 16.164 0 15.75 L 0 0.75 C 0 0.336 0.336 0 0.75 0 L 15.75 0 C 16.164 0 16.5 0.336 16.5 0.75 L 16.5 15.75 C 16.5 16.164 16.164 16.5 15.75 16.5 Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(3.75 3.75)"/>
+    <path d="M 0 3 L 2.25 5.25 L 7.5 0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(8.25 9.75)"/>
+  </symbol>
+  <symbol id="i-support" viewBox="0 0 24 24">
+    <path d="M 0 9 C 0 4.029 4.029 0 9 0 C 13.971 0 18 4.029 18 9 C 18 13.971 13.971 18 9 18 C 4.029 18 0 13.971 0 9 Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(3 3)"/>
+    <path d="M 0 3.75 C 0 3.75 1.679 0 3.75 0 C 5.821 0 7.5 1.679 7.5 3.75 C 7.5 5.821 5.821 7.5 3.75 7.5 C 1.679 7.5 0 5.821 0 3.75 Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(8.25 8.25)"/>
+    <path d="M 0 0 L 7.426 7.426" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(5.636 5.636)"/>
+    <path d="M 0 7.426 L 7.426 0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" transform="translate(5.636 5.636)"/>
+  </symbol>
+</svg>
+
+<script src="/js/ui.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/bg.js"></script>
+<script src="/js/store.js"></script>
+<script src="/js/addcc.js"></script>
+<script src="/js/vc.js"></script>
+<script src="/js/buy.js"></script>
+<script src="/js/tickets.js"></script>
+</body>
+</html>

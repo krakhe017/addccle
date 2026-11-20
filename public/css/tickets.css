@@ -1,0 +1,18 @@
+.ticket-modal{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(2,3,5,.76)}
+.ticket-modal.open{display:flex}
+.ticket-box{width:100%;max-width:420px;display:flex;flex-direction:column;gap:14px;padding:26px 24px 22px;border-radius:14px;background:linear-gradient(180deg,#1c1f25 0%,#14171c 100%);border:1px solid rgba(255,255,255,.10);box-shadow:0 30px 70px rgba(0,0,0,.75);animation:fade .22s ease}
+.ticket-box h3{margin:0;font-family:"Space Grotesk",Inter,sans-serif;font-size:16px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#eef2f6}
+.ticket-field{display:flex;flex-direction:column;gap:6px}
+.ticket-field span{font-family:"Space Grotesk",Inter,sans-serif;font-size:9.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#8e99a5}
+.ticket-field input,.ticket-field textarea{width:100%;font-family:Inter,sans-serif;font-size:13.5px;color:#e9eef4;background:#0c0e12;border:1px solid #2a2f37;border-radius:9px;padding:11px 12px;outline:none;resize:vertical}
+.ticket-field input:focus,.ticket-field textarea:focus{border-color:#5a6472}
+.ticket-actions{display:flex;gap:10px;margin-top:2px}
+.ticket-cancel{flex:1;font-family:inherit;font-size:12px;font-weight:600;padding:11px 14px;border-radius:9px;cursor:pointer;background:transparent;border:1px solid #333941;color:#aab3bd}
+.ticket-cancel:hover{color:#eef2f6;border-color:#4a525c}
+.ticket-send{flex:1.4;font-family:inherit;font-size:12px;font-weight:700;padding:11px 14px;border-radius:9px;cursor:pointer;background:#e83148;border:0;color:#fff}
+.ticket-send:hover{background:#d32a40}
+.ticket-send:disabled{cursor:default;background:#3f7a52}
+.ticket-msg{margin:0;font-size:11.5px;line-height:1.5;color:#98a3ae}
+.ticket-msg:empty{display:none}
+.ticket-msg.bad{color:#e08585}
+.ticket-msg.ok{color:#8fd6a4}

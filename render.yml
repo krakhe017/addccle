@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: esq-bypass
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: esq-db
+          property: connectionString
+      - { key: VIP_USER, sync: false }
+      - { key: VIP_PASS_HASH, sync: false }
+      - { key: ADMIN_USER, sync: false }
+      - { key: ADMIN_PASS_HASH, sync: false }
+      - { key: WALLET_USDT_BEP20, sync: false }
+      - { key: WALLET_USDT_TRC20, sync: false }
+      - { key: WALLET_LTC, sync: false }
+      - { key: WALLET_BTC, sync: false }
+
+databases:
+  - name: esq-db
+    plan: free

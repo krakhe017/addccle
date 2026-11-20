@@ -1,0 +1,26 @@
+#store .vcpage{position:relative;z-index:4;flex:1 1 auto;width:100%;display:none;flex-direction:column;align-items:center;gap:22px;padding:30px 24px 80px}
+#store .vcpage.on{display:flex;animation:fade .26s ease}
+#store .vc-wrap{width:100%;max-width:470px;display:flex;flex-direction:column;gap:16px;padding:26px 24px;border-radius:16px;background:linear-gradient(150deg,rgba(255,255,255,.090) 0%,rgba(255,255,255,.045) 50%,rgba(255,255,255,.022) 100%);border:1px solid rgba(255,255,255,.12);box-shadow:0 34px 80px rgba(0,0,0,.70),inset 0 1px 0 rgba(255,255,255,.12)}
+
+#store .vc-stage{display:none;flex-direction:column;gap:14px;width:100%}
+#store .vc-stage.on{display:flex;animation:fade .24s ease}
+
+#store .vc-card{position:relative;overflow:hidden;width:100%;display:flex;align-items:center;gap:13px;padding:13px 14px;border-radius:14px;background:linear-gradient(150deg,rgba(255,255,255,.080) 0%,rgba(255,255,255,.030) 55%,rgba(255,255,255,.014) 100%);border:1px solid rgba(255,255,255,.11);box-shadow:0 12px 26px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.10);margin-bottom:10px;transition:border-color .2s ease}
+#store .vc-card:hover{border-color:rgba(255,194,51,.42)}
+#store .vc-card-info{flex:1 0 0;min-width:0;display:flex;flex-direction:column;gap:3px}
+#store .vc-card-num{font-family:"Space Grotesk",Inter,sans-serif;font-size:14px;font-weight:600;letter-spacing:.09em;color:#eef2f6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#store .vc-card-sub{font-family:Inter,sans-serif;font-size:11.5px;font-weight:500;color:#8a95a1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#store .vc-go{flex:none;border:1px solid rgba(255,194,51,.45);background:linear-gradient(180deg,rgba(255,194,51,.16),rgba(255,194,51,.05));color:#ffc233;font-family:"Space Grotesk",Inter,sans-serif;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:8px 12px;border-radius:999px;cursor:pointer;transition:background .16s ease,border-color .16s ease}
+#store .vc-go:hover{background:linear-gradient(180deg,rgba(255,194,51,.28),rgba(255,194,51,.10));border-color:rgba(255,194,51,.80)}
+
+#store .vc-row{display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:12px;background:rgba(0,0,0,.30);border:1px solid rgba(143,214,164,.30);animation:pop .3s cubic-bezier(.2,1.3,.5,1)}
+#store .vc-check{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-content:center;font-size:13px;background:rgba(143,214,164,.16);border:1px solid rgba(143,214,164,.55);color:#8fd6a4}
+#store .vc-body{flex:1 0 0;min-width:0;display:flex;flex-direction:column;gap:3px}
+#store .vc-num{font-family:"Space Grotesk",Inter,sans-serif;font-size:14px;font-weight:600;letter-spacing:.09em;color:#eef2f6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#store .vc-sub{font-family:Inter,sans-serif;font-size:11px;font-weight:500;color:#8a95a1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#store .vc-badge{flex:none;font-family:"Space Grotesk",Inter,sans-serif;font-size:8.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#8fd6a4;border:1px solid rgba(143,214,164,.45);border-radius:999px;padding:3px 9px}
+#store .vc-empty{margin:0;font-size:12.5px;line-height:1.75;color:#8a95a1;text-align:center}
+
+@media (max-width:900px){
+  #store .vcpage{padding:22px 18px 70px}
+}
