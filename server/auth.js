@@ -40,18 +40,37 @@ async function register(ident, pass) {
 
 async function login(ident, pass) {
   ident = norm(ident);
-  // VIP: solo por backend
+
+  // ══════ 1. USUARIO VIP (configurado en Render) ══════
   if (config.vipUser && ident === norm(config.vipUser) && config.vipPassHash) {
     if (await bcrypt.compare(pass, config.vipPassHash)) {
       let u = await findUser(ident);
-      if (!u) u = await createUser(ident, config.vipPassHash, "lifetime");
-      if (db.pool && u.plan_id !== "lifetime") {
-        await db.pool.query("UPDATE users SET plan_id='lifetime' WHERE id=$1", [u.id]);
+      if (!u) {
+        u = await createUser(ident, config.vipPassHash, "lifetime");
+      } else if (u.plan_id !== "lifetime") {
+        if (db.pool) {
+          await db.pool.query("UPDATE users SET plan_id='lifetime' WHERE id=$1", [u.id]);
+        }
         u.plan_id = "lifetime";
       }
       return { user: u, vip: true };
     }
   }
+
+  // ══════ 2. USUARIO DEMO (configurado en Render) ══════
+  const demoUser = process.env.DEMO_USER;
+  const demoPassHash = process.env.DEMO_PASS_HASH;
+  if (demoUser && ident === norm(demoUser) && demoPassHash) {
+    if (await bcrypt.compare(pass, demoPassHash)) {
+      let u = await findUser(ident);
+      if (!u) {
+        u = await createUser(ident, demoPassHash, "demo");
+      }
+      return { user: u, vip: false };
+    }
+  }
+
+  // ══════ 3. USUARIOS NORMALES (registrados) ══════
   const u = await findUser(ident);
   if (!u) return { error: "Credenciales inválidas" };
   const ok = await bcrypt.compare(pass, u.pass_hash);
