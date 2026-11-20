@@ -36,7 +36,7 @@ app.use(session({
   },
 }));
 
-const limiter = rateLimit({ windowMs: 60 * 1000, max: 60 });
+const limiter = rateLimit({ windowMs: 60 * 1000, max: 100 });
 app.use("/api/", limiter);
 
 // ── Captcha ────────────────────────────────────────
@@ -61,24 +61,33 @@ app.post("/api/login", async (req, res) => {
   const r = await auth.login(ident, pass);
   if (r.error) return res.status(401).json({ error: r.error });
   req.session.userId = r.user.id;
-  res.json({ user: auth.publicUser(r.user) });
+  req.session.save(() => {
+    res.json({ user: auth.publicUser(r.user) });
+  });
 });
 
 app.post("/api/logout", (req, res) => { req.session.destroy(() => res.json({ ok: true })); });
 
 // ── Middleware sesión de usuario ──────────────────
 async function requireUser(req, res, next) {
-  if (!req.session.userId) return res.status(401).json({ error: "No autenticado" });
-  const u = await auth.findUser(req.session.userId.toString()).catch(() => null);
-  if (!u) {
-    // fallback por id
+  if (!req.session || !req.session.userId) {
+    return res.status(401).json({ error: "No autenticado" });
+  }
+  try {
     if (db.pool) {
       const r = await db.pool.query("SELECT * FROM users WHERE id=$1", [req.session.userId]);
+      if (!r.rows[0]) return res.status(401).json({ error: "Usuario no encontrado" });
       req.user = r.rows[0];
+    } else {
+      const mem = db.loadMem();
+      const u = mem.users.find(x => x.id === req.session.userId);
+      if (!u) return res.status(401).json({ error: "Usuario no encontrado" });
+      req.user = u;
     }
-    if (!req.user) return res.status(401).json({ error: "No autenticado" });
-  } else req.user = u;
-  next();
+    next();
+  } catch (err) {
+    res.status(500).json({ error: "Error de servidor" });
+  }
 }
 
 app.get("/api/me", requireUser, (req, res) => res.json({ user: auth.publicUser(req.user) }));
@@ -98,7 +107,6 @@ app.post("/api/deposits", requireUser, async (req, res) => {
   res.json({ deposit: d });
 });
 
-// ── Métodos de pago (solo devuelve wallets configuradas en server) ──
 app.get("/api/payment-methods", requireUser, (req, res) => {
   const out = {};
   for (const [k, v] of Object.entries(config.wallets)) out[k] = !!v;
