@@ -16,14 +16,20 @@ async function findUser(ident) {
 async function createUser(ident, passHash, planId) {
   if (db.pool) {
     const r = await db.pool.query(
-      "INSERT INTO users (ident, pass_hash, plan_id) VALUES ($1,$2,$3) RETURNING *",
+      "INSERT INTO users (ident, pass_hash, plan_id) VALUES ($1,$2,$3) ON CONFLICT (ident) DO UPDATE SET pass_hash=$2 RETURNING *",
       [ident, passHash, planId || null]
     );
     return r.rows[0];
   }
   const mem = db.loadMem();
-  const u = { id: mem.users.length + 1, ident, pass_hash: passHash, plan_id: planId || null, balance_cents: 0 };
-  mem.users.push(u);
+  let u = mem.users.find(x => x.ident === ident);
+  if (u) {
+    u.pass_hash = passHash;
+    if (planId) u.plan_id = planId;
+  } else {
+    u = { id: mem.users.length + 1, ident, pass_hash: passHash, plan_id: planId || null, balance_cents: 0 };
+    mem.users.push(u);
+  }
   db.saveMem();
   return u;
 }
@@ -41,36 +47,27 @@ async function register(ident, pass) {
 async function login(ident, pass) {
   ident = norm(ident);
 
-  // ══════ 1. USUARIO VIP (configurado en Render) ══════
+  // 1. USUARIO VIP
   if (config.vipUser && ident === norm(config.vipUser) && config.vipPassHash) {
-    if (await bcrypt.compare(pass, config.vipPassHash)) {
-      let u = await findUser(ident);
-      if (!u) {
-        u = await createUser(ident, config.vipPassHash, "lifetime");
-      } else if (u.plan_id !== "lifetime") {
-        if (db.pool) {
-          await db.pool.query("UPDATE users SET plan_id='lifetime' WHERE id=$1", [u.id]);
-        }
-        u.plan_id = "lifetime";
-      }
+    const isMatch = await bcrypt.compare(pass, config.vipPassHash);
+    if (isMatch) {
+      let u = await createUser(ident, config.vipPassHash, "lifetime");
       return { user: u, vip: true };
     }
   }
 
-  // ══════ 2. USUARIO DEMO (configurado en Render) ══════
+  // 2. USUARIO DEMO
   const demoUser = process.env.DEMO_USER;
   const demoPassHash = process.env.DEMO_PASS_HASH;
   if (demoUser && ident === norm(demoUser) && demoPassHash) {
-    if (await bcrypt.compare(pass, demoPassHash)) {
-      let u = await findUser(ident);
-      if (!u) {
-        u = await createUser(ident, demoPassHash, "demo");
-      }
+    const isMatch = await bcrypt.compare(pass, demoPassHash);
+    if (isMatch) {
+      let u = await createUser(ident, demoPassHash, "demo");
       return { user: u, vip: false };
     }
   }
 
-  // ══════ 3. USUARIOS NORMALES (registrados) ══════
+  // 3. USUARIOS NORMALES
   const u = await findUser(ident);
   if (!u) return { error: "Credenciales inválidas" };
   const ok = await bcrypt.compare(pass, u.pass_hash);
